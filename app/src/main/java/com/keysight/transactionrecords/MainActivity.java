@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String account_Amex_True_Cashback_LIU_YULEI = "Amex True Cashback - LIU YULEI";
     private static final String account_Amex_True_Cashback_LI_CHANG = "Amex True Cashback - LI CHANG";
     private static final String account_Posb_Everyday_LIU_YULEI = "Posb Everyday - LIU YULEI (Main)";
-    private static final String account_Posb_Everyday_LI_CHANG = "Posb Everyday - (Supplementary) LI CHANG";
+    private static final String account_Posb_Everyday_LI_CHANG_S = "Posb Everyday - LI CHANG (Supplementary)";
     private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
     private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
     private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                         account_Amex_True_Cashback_LIU_YULEI,
                         account_Amex_True_Cashback_LI_CHANG,
                         account_Posb_Everyday_LIU_YULEI,
-                        account_Posb_Everyday_LI_CHANG}));
+                        account_Posb_Everyday_LI_CHANG_S}));
 
         ((EditText) findViewById(R.id.editDate)).setText(
                 new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime()));
