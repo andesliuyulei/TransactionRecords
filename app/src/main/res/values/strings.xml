@@ -3,4 +3,5 @@
     <string name="hint_transaction_amount">Transaction Amount</string>
     <string name="button_submit_transaction">Submit Transaction</string>
     <string name="hint_transaction_date">Transaction Date</string>
+    <string name="hint_remark">Remark</string>
 </resources>
