@@ -2,6 +2,7 @@ package com.keysight.transactionrecords;
 
 import android.Manifest;
 import android.accounts.AccountManager;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -66,12 +68,18 @@ public class MainActivity extends AppCompatActivity {
     private static final String account_Posb_Everyday_LI_CHANG_S = "Posb Everyday - LI CHANG (Supplementary)";
     private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
     private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
-    private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
+    //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
 
     public static final String transactionAccount = "Transaction Account";
     public static final String transactionDate = "Transaction Date";
     public static final String transactionAmount = "Transaction Amount";
     public static final String transactionRemark = "Transaction Remark";
+    public static final String accountBalance = "Account Balance";
+
+    private static Spinner spinnerAccount = null;
+    private static EditText editDate = null;
+    private static EditText editAmount = null;
+    private static EditText editRemark = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,22 +88,64 @@ public class MainActivity extends AppCompatActivity {
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Calling Google Apps Script Execution API ...");
 
-        ((Spinner) findViewById(R.id.spinnerAccount)).setAdapter(
-                new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item,
-                new String[] {account_eMCA_LIU_YULEI_SGD,
-                        account_Amex_True_Cashback_LIU_YULEI,
-                        account_Amex_True_Cashback_LI_CHANG,
-                        account_Posb_Everyday_LIU_YULEI,
-                        account_Posb_Everyday_LI_CHANG_S}));
+        spinnerAccount = (Spinner) findViewById(R.id.spinnerAccount);
+        editDate = (EditText) findViewById(R.id.editDate);
+        editAmount = (EditText) findViewById(R.id.editAmount);
+        editRemark = (EditText) findViewById(R.id.editRemark);
 
-        ((EditText) findViewById(R.id.editDate)).setText(
-                new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+        spinnerAccount.setAdapter(
+                new ArrayAdapter<String>(
+                        this,
+                        android.R.layout.simple_spinner_item,
+                        new String[] {
+                                account_eMCA_LIU_YULEI_SGD,
+                                account_Amex_True_Cashback_LIU_YULEI,
+                                account_Amex_True_Cashback_LI_CHANG,
+                                account_Posb_Everyday_LIU_YULEI,
+                                account_Posb_Everyday_LI_CHANG_S
+                        }
+                )
+        );
+
+        editDate.setText(
+                new SimpleDateFormat(
+                        "yyyy-MM-dd",
+                        Locale.getDefault()
+                ).format(Calendar.getInstance().getTime())
+        );
+        editDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // get current selected year, month and day.
+                String currentDate = editDate.getText().toString();
+                int mYear = Integer.parseInt(currentDate.substring(0,4)); // current year
+                int mMonth = Integer.parseInt(currentDate.substring(5,7)) - 1; // current month
+                int mDay = Integer.parseInt(currentDate.substring(8)); // current day
+                // date picker dialog
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        MainActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                // set year, month and day value in the edit text
+                                editDate.setText(
+                                        year +
+                                        (monthOfYear<9?"-0":"-") + (monthOfYear + 1) +
+                                        (dayOfMonth<10?"-0":"-") + dayOfMonth
+                                );
+                            }
+                        },
+                        mYear, mMonth, mDay
+                );
+                datePickerDialog.show();
+            }
+        });
 
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
-                getApplicationContext(), Arrays.asList(SCOPES))
-                .setBackOff(new ExponentialBackOff());
+                getApplicationContext(),
+                Arrays.asList(SCOPES)
+        ).setBackOff(new ExponentialBackOff());
     }
 
     /** Called when the user taps the Submit Transaction button */
@@ -107,12 +157,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayResult(List<String> output) {
         Intent intent = new Intent(this, DisplayResult.class);
-        intent.putExtra(transactionAccount, ((Spinner) findViewById(R.id.spinnerAccount)).getSelectedItem().toString());
-        intent.putExtra(transactionDate, ((EditText) findViewById(R.id.editDate)).getText().toString());
-        intent.putExtra(transactionAmount, ((EditText) findViewById(R.id.editAmount)).getText().toString());
-        intent.putExtra(transactionRemark, ((EditText) findViewById(R.id.editRemark)).getText().toString());
+        intent.putExtra(transactionAccount, spinnerAccount.getSelectedItem().toString());
+        intent.putExtra(transactionDate, editDate.getText().toString());
+        intent.putExtra(transactionAmount, editAmount.getText().toString());
+        intent.putExtra(transactionRemark, editRemark.getText().toString());
         if (output != null) {
-            //put something here.
+            intent.putExtra(accountBalance, output.toArray()[0].toString());
         }
         startActivity(intent);
     }
@@ -260,14 +310,21 @@ public class MainActivity extends AppCompatActivity {
                 case account_eMCA_LIU_YULEI_SGD:
                     scriptId = scriptId_DBS_POSB;
                     functionName = "newTransaction_eMCA_SGD";
-                    functionParameters.add(((EditText) findViewById(R.id.editAmount)).getText().toString());
-                    functionParameters.add(((EditText) findViewById(R.id.editRemark)).getText().toString());
+                    functionParameters.add(editAmount.getText().toString());
+                    functionParameters.add(editRemark.getText().toString());
                     break;
                 case account_Amex_True_Cashback_LIU_YULEI:
                     scriptId = scriptId_AMEX;
                     functionName = "newTransaction_True_Cashback";
-                    functionParameters.add(((EditText) findViewById(R.id.editAmount)).getText().toString());
-                    functionParameters.add(((EditText) findViewById(R.id.editRemark)).getText().toString());
+                    functionParameters.add(editAmount.getText().toString());
+                    functionParameters.add(editRemark.getText().toString());
+                    break;
+                case account_Amex_True_Cashback_LI_CHANG:
+                    scriptId = scriptId_AMEX;
+                    functionName = "newTransaction_True_Cashback_LI_CHANG";
+                    functionParameters.add(editDate.getText().toString());
+                    functionParameters.add(editAmount.getText().toString());
+                    functionParameters.add(editRemark.getText().toString());
                     break;
             }
 
@@ -334,19 +391,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            //mOutputText.setText("");
             mProgress.show();
         }
 
         @Override
         protected void onPostExecute(List<String> output) {
             mProgress.hide();
-            if (output == null || output.size() == 0) {
-                //mOutputText.setText("No results returned.");
-            } else {
-                //output.add(0, "Data retrieved using the Google Apps Script Execution API:");
-                //mOutputText.setText(TextUtils.join("\n", output));
-            }
             displayResult(output);
         }
 
