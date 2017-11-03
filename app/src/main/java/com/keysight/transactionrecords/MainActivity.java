@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
             String functionName = null;
             List<Object> functionParameters = new ArrayList<>();
 
-            switch (((Spinner) findViewById(R.id.spinnerAccount)).getSelectedItem().toString()) {
+            switch (spinnerAccount.getSelectedItem().toString()) {
                 case account_eMCA_LIU_YULEI_SGD:
                     scriptId = scriptId_DBS_POSB;
                     functionName = "newTransaction_eMCA_SGD";
