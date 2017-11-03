@@ -192,10 +192,8 @@ public class MainActivity extends AppCompatActivity {
      *     date on this device; false otherwise.
      */
     private boolean isGooglePlayServicesAvailable() {
-        GoogleApiAvailability apiAvailability =
-                GoogleApiAvailability.getInstance();
-        final int connectionStatusCode =
-                apiAvailability.isGooglePlayServicesAvailable(this);
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        final int connectionStatusCode = apiAvailability.isGooglePlayServicesAvailable(this);
         return connectionStatusCode == ConnectionResult.SUCCESS;
     }
 
@@ -204,10 +202,8 @@ public class MainActivity extends AppCompatActivity {
      * Play Services installation via a user dialog, if possible.
      */
     private void acquireGooglePlayServices() {
-        GoogleApiAvailability apiAvailability =
-                GoogleApiAvailability.getInstance();
-        final int connectionStatusCode =
-                apiAvailability.isGooglePlayServicesAvailable(this);
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        final int connectionStatusCode = apiAvailability.isGooglePlayServicesAvailable(this);
         if (apiAvailability.isUserResolvableError(connectionStatusCode)) {
             showGooglePlayServicesAvailabilityErrorDialog(connectionStatusCode);
         }
@@ -225,18 +221,14 @@ public class MainActivity extends AppCompatActivity {
      */
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
-        if (EasyPermissions.hasPermissions(
-                this, Manifest.permission.GET_ACCOUNTS)) {
-            String accountName = getPreferences(Context.MODE_PRIVATE)
-                    .getString(PREF_ACCOUNT_NAME, null);
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS)) {
+            String accountName = getPreferences(Context.MODE_PRIVATE).getString(PREF_ACCOUNT_NAME, null);
             if (accountName != null) {
                 mCredential.setSelectedAccountName(accountName);
                 getResultsFromApi();
             } else {
                 // Start a dialog from which the user can choose an account
-                startActivityForResult(
-                        mCredential.newChooseAccountIntent(),
-                        REQUEST_ACCOUNT_PICKER);
+                startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
             }
         } else {
             // Request the GET_ACCOUNTS permission via a user dialog
@@ -244,7 +236,8 @@ public class MainActivity extends AppCompatActivity {
                     this,
                     "This app needs to access your Google account (via Contacts).",
                     REQUEST_PERMISSION_GET_ACCOUNTS,
-                    Manifest.permission.GET_ACCOUNTS);
+                    Manifest.permission.GET_ACCOUNTS
+            );
         }
     }
 
@@ -253,8 +246,7 @@ public class MainActivity extends AppCompatActivity {
      * @return true if the device has a network connection, false otherwise.
      */
     private boolean isDeviceOnline() {
-        ConnectivityManager connMgr =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
     }
@@ -271,9 +263,8 @@ public class MainActivity extends AppCompatActivity {
             HttpTransport transport = AndroidHttp.newCompatibleTransport();
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
             mService = new com.google.api.services.script.Script.Builder(
-                    transport, jsonFactory, setHttpTimeout(credential))
-                    .setApplicationName("TransactionRecords")
-                    .build();
+                    transport, jsonFactory, setHttpTimeout(credential)
+            ).setApplicationName("TransactionRecords").build();
         }
 
         /**
@@ -298,8 +289,7 @@ public class MainActivity extends AppCompatActivity {
          * @return list of String folder names and their IDs
          * @throws IOException
          */
-        private List<String> getDataFromApi()
-                throws IOException, GoogleAuthException {
+        private List<String> getDataFromApi() throws IOException, GoogleAuthException {
             // ID of the script to call. Acquire this from the Apps Script editor,
             // under Publish > Deploy as API executable.
             String scriptId = null;
@@ -367,11 +357,9 @@ public class MainActivity extends AppCompatActivity {
             // 'errorType', and an array of stack trace elements (which also need to
             // be cast as Maps).
             Map<String, Object> detail = op.getError().getDetails().get(0);
-            List<Map<String, Object>> stacktrace =
-                    (List<Map<String, Object>>)detail.get("scriptStackTraceElements");
+            List<Map<String, Object>> stacktrace = (List<Map<String, Object>>)detail.get("scriptStackTraceElements");
 
-            java.lang.StringBuilder sb =
-                    new StringBuilder("\nScript error message: ");
+            java.lang.StringBuilder sb = new StringBuilder("\nScript error message: ");
             sb.append(detail.get("errorMessage"));
 
             if (stacktrace != null) {
@@ -446,12 +434,10 @@ public class MainActivity extends AppCompatActivity {
      *         a credential object.
      * @return an initializer with an extended read timeout.
      */
-    private static HttpRequestInitializer setHttpTimeout(
-            final HttpRequestInitializer requestInitializer) {
+    private static HttpRequestInitializer setHttpTimeout(final HttpRequestInitializer requestInitializer) {
         return new HttpRequestInitializer() {
             @Override
-            public void initialize(HttpRequest httpRequest)
-                    throws java.io.IOException {
+            public void initialize(HttpRequest httpRequest) throws java.io.IOException {
                 requestInitializer.initialize(httpRequest);
                 // This allows the API to call (and avoid timing out on)
                 // functions that take up to 6 minutes to complete (the maximum
@@ -472,8 +458,7 @@ public class MainActivity extends AppCompatActivity {
      *     activity result.
      */
     @Override
-    protected void onActivityResult(
-            int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
