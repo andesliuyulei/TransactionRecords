@@ -61,13 +61,15 @@ public class MainActivity extends AppCompatActivity {
             "https://www.googleapis.com/auth/script.external_request"
     };
 
-    private static final String account_eMCA_LIU_YULEI_SGD = "eMCA - LIU YULEI (SGD)";
-    private static final String account_Amex_True_Cashback_LIU_YULEI = "Amex True Cashback - LIU YULEI";
-    private static final String account_Amex_True_Cashback_LI_CHANG = "Amex True Cashback - LI CHANG";
-    private static final String account_Posb_Everyday_LIU_YULEI = "Posb Everyday - LIU YULEI (Main)";
-    private static final String account_Posb_Everyday_LI_CHANG_S = "Posb Everyday - LI CHANG (Supplementary)";
+    private static final String account_Dbs_eMCA_LIU_YULEI_SGD = "DBS eMCA - LIU YULEI (SGD)";
+    private static final String account_Amex_True_Cashback_LIU_YULEI = "AMEX True Cashback - LIU YULEI";
+    private static final String account_Amex_True_Cashback_LI_CHANG = "AMEX True Cashback - LI CHANG";
+    private static final String account_Posb_Everyday_LIU_YULEI = "POSB Everyday - LIU YULEI (Main)";
+    private static final String account_Posb_Everyday_LI_CHANG_S = "POSB Everyday - LI CHANG (Supplementary)";
+    private static final String account_Ocbc_360_Account = "OCBC 360 Account";
     private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
     private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
+    private static final String scriptId_OCBC = "MV2T0hPrD2ktnUOLUHHbKGkw9ezPKz0cG";
     //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
 
     public static final String transactionAccount = "Transaction Account";
@@ -98,11 +100,12 @@ public class MainActivity extends AppCompatActivity {
                         this,
                         android.R.layout.simple_spinner_item,
                         new String[] {
-                                account_eMCA_LIU_YULEI_SGD,
+                                account_Dbs_eMCA_LIU_YULEI_SGD,
                                 account_Amex_True_Cashback_LIU_YULEI,
                                 account_Amex_True_Cashback_LI_CHANG,
                                 account_Posb_Everyday_LIU_YULEI,
-                                account_Posb_Everyday_LI_CHANG_S
+                                account_Posb_Everyday_LI_CHANG_S,
+                                account_Ocbc_360_Account
                         }
                 )
         );
@@ -297,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
             List<Object> functionParameters = new ArrayList<>();
 
             switch (spinnerAccount.getSelectedItem().toString()) {
-                case account_eMCA_LIU_YULEI_SGD:
+                case account_Dbs_eMCA_LIU_YULEI_SGD:
                     scriptId = scriptId_DBS_POSB;
                     functionName = "newTransaction_eMCA_SGD";
                     functionParameters.add(editAmount.getText().toString());
@@ -312,6 +315,29 @@ public class MainActivity extends AppCompatActivity {
                 case account_Amex_True_Cashback_LI_CHANG:
                     scriptId = scriptId_AMEX;
                     functionName = "newTransaction_True_Cashback_LI_CHANG";
+                    functionParameters.add(editDate.getText().toString());
+                    functionParameters.add(editAmount.getText().toString());
+                    functionParameters.add(editRemark.getText().toString());
+                    break;
+                case account_Posb_Everyday_LIU_YULEI:
+                    scriptId = scriptId_DBS_POSB;
+                    functionName = "newTransaction_Posb_Everyday";
+                    functionParameters.add(editDate.getText().toString());
+                    functionParameters.add(editAmount.getText().toString());
+                    functionParameters.add("Liu Yulei");
+                    functionParameters.add(editRemark.getText().toString());
+                    break;
+                case account_Posb_Everyday_LI_CHANG_S:
+                    scriptId = scriptId_DBS_POSB;
+                    functionName = "newTransaction_Posb_Everyday";
+                    functionParameters.add(editDate.getText().toString());
+                    functionParameters.add(editAmount.getText().toString());
+                    functionParameters.add("Li Chang");
+                    functionParameters.add(editRemark.getText().toString());
+                    break;
+                case account_Ocbc_360_Account:
+                    scriptId = scriptId_OCBC;
+                    functionName = "newTransaction_360_Account";
                     functionParameters.add(editDate.getText().toString());
                     functionParameters.add(editAmount.getText().toString());
                     functionParameters.add(editRemark.getText().toString());
