@@ -67,11 +67,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String account_Posb_Everyday_LIU_YULEI = "POSB Everyday - LIU YULEI (Main)";
     private static final String account_Posb_Everyday_LI_CHANG_S = "POSB Everyday - LI CHANG (Supplementary)";
     private static final String account_Ocbc_360_Account = "OCBC 360 Account";
+    private static final String account_Ocbc_365_Visa = "OCBC 365 VISA";
     private static final String account_Boc_Savings_Suqian_LI_CHANG = "BOC Savings Suqian - LI CHANG";
+    private static final String account_Maybank_Family_n_Friends = "Maybank Family & Friends";
     private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
     private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
     private static final String scriptId_OCBC = "MV2T0hPrD2ktnUOLUHHbKGkw9ezPKz0cG";
     private static final String scriptId_BOC = "M6X7qbK-Sn1QkE66425Rf2RU9l98eQNnp";
+    private static final String scriptId_Maybank = "MK75Sp5IMNgQ4Nl6GZUdcSxU9l98eQNnp";
     //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
 
     public static final String transactionAccount = "Transaction Account";
@@ -108,7 +111,9 @@ public class MainActivity extends AppCompatActivity {
                                 account_Posb_Everyday_LIU_YULEI,
                                 account_Posb_Everyday_LI_CHANG_S,
                                 account_Ocbc_360_Account,
-                                account_Boc_Savings_Suqian_LI_CHANG
+                                account_Ocbc_365_Visa,
+                                account_Boc_Savings_Suqian_LI_CHANG,
+                                account_Maybank_Family_n_Friends
                         }
                 )
         );
@@ -348,6 +353,20 @@ public class MainActivity extends AppCompatActivity {
                 case account_Boc_Savings_Suqian_LI_CHANG:
                     scriptId = scriptId_BOC;
                     functionName = "newTransaction_Savings_Suqian";
+                    functionParameters.add(editDate.getText().toString());
+                    functionParameters.add(editAmount.getText().toString());
+                    functionParameters.add(editRemark.getText().toString());
+                    break;
+                case account_Ocbc_365_Visa:
+                    scriptId = scriptId_OCBC;
+                    functionName = "newTransaction_365_Visa";
+                    functionParameters.add(editDate.getText().toString());
+                    functionParameters.add(editAmount.getText().toString());
+                    functionParameters.add(editRemark.getText().toString());
+                    break;
+                case account_Maybank_Family_n_Friends:
+                    scriptId = scriptId_Maybank;
+                    functionName = "newTransaction_Family_n_Friends";
                     functionParameters.add(editDate.getText().toString());
                     functionParameters.add(editAmount.getText().toString());
                     functionParameters.add(editRemark.getText().toString());
