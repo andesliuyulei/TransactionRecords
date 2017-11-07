@@ -72,11 +72,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String account_Ocbc_365_Visa = "OCBC 365 VISA";
     private static final String account_Boc_Savings_Suqian_LI_CHANG = "BOC Savings Suqian - LI CHANG";
     private static final String account_Maybank_Family_n_Friends = "Maybank Family & Friends";
+    private static final String account_Cimb_Visa_Signature = "CIMB Visa Signature";
     private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
     private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
     private static final String scriptId_OCBC = "MV2T0hPrD2ktnUOLUHHbKGkw9ezPKz0cG";
     private static final String scriptId_BOC = "M6X7qbK-Sn1QkE66425Rf2RU9l98eQNnp";
     private static final String scriptId_Maybank = "MK75Sp5IMNgQ4Nl6GZUdcSxU9l98eQNnp";
+    private static final String scriptId_CIMB = "Mhf-AvlvNjbvPPLwsJY7VPkw9ezPKz0cG";
     //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
 
     public static final String transactionAccount = "Transaction Account";
@@ -117,7 +119,8 @@ public class MainActivity extends AppCompatActivity {
                                 account_Ocbc_360_Account,
                                 account_Ocbc_365_Visa,
                                 account_Boc_Savings_Suqian_LI_CHANG,
-                                account_Maybank_Family_n_Friends
+                                account_Maybank_Family_n_Friends,
+                                account_Cimb_Visa_Signature
                         }
                 )
         );
@@ -387,6 +390,13 @@ public class MainActivity extends AppCompatActivity {
                     scriptId = scriptId_DBS_POSB;
                     functionName = "newTransaction_Posb_Savings";
                     functionParameters.add("LI CHANG");
+                    functionParameters.add(editDate.getText().toString());
+                    functionParameters.add(editAmount.getText().toString());
+                    functionParameters.add(editRemark.getText().toString());
+                    break;
+                case account_Cimb_Visa_Signature:
+                    scriptId = scriptId_CIMB;
+                    functionName = "newTransaction_Visa_Signature";
                     functionParameters.add(editDate.getText().toString());
                     functionParameters.add(editAmount.getText().toString());
                     functionParameters.add(editRemark.getText().toString());
