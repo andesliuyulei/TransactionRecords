@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String account_Amex_True_Cashback_LI_CHANG = "AMEX True Cashback - LI CHANG";
     private static final String account_Posb_Everyday_LIU_YULEI = "POSB Everyday - LIU YULEI (Main)";
     private static final String account_Posb_Everyday_LI_CHANG_S = "POSB Everyday - LI CHANG (Supplementary)";
+    private static final String account_Posb_Savings_LIU_YULEI = "POSB Savings - LIU YULEI";
+    private static final String account_Posb_Savings_LI_CHANG = "POSB Savings - LI CHANG";
     private static final String account_Ocbc_360_Account = "OCBC 360 Account";
     private static final String account_Ocbc_365_Visa = "OCBC 365 VISA";
     private static final String account_Boc_Savings_Suqian_LI_CHANG = "BOC Savings Suqian - LI CHANG";
@@ -110,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
                                 account_Amex_True_Cashback_LI_CHANG,
                                 account_Posb_Everyday_LIU_YULEI,
                                 account_Posb_Everyday_LI_CHANG_S,
+                                account_Posb_Savings_LIU_YULEI,
+                                account_Posb_Savings_LI_CHANG,
                                 account_Ocbc_360_Account,
                                 account_Ocbc_365_Visa,
                                 account_Boc_Savings_Suqian_LI_CHANG,
@@ -367,6 +371,22 @@ public class MainActivity extends AppCompatActivity {
                 case account_Maybank_Family_n_Friends:
                     scriptId = scriptId_Maybank;
                     functionName = "newTransaction_Family_n_Friends";
+                    functionParameters.add(editDate.getText().toString());
+                    functionParameters.add(editAmount.getText().toString());
+                    functionParameters.add(editRemark.getText().toString());
+                    break;
+                case account_Posb_Savings_LIU_YULEI:
+                    scriptId = scriptId_DBS_POSB;
+                    functionName = "newTransaction_Posb_Savings";
+                    functionParameters.add("LIU YULEI");
+                    functionParameters.add(editDate.getText().toString());
+                    functionParameters.add(editAmount.getText().toString());
+                    functionParameters.add(editRemark.getText().toString());
+                    break;
+                case account_Posb_Savings_LI_CHANG:
+                    scriptId = scriptId_DBS_POSB;
+                    functionName = "newTransaction_Posb_Savings";
+                    functionParameters.add("LI CHANG");
                     functionParameters.add(editDate.getText().toString());
                     functionParameters.add(editAmount.getText().toString());
                     functionParameters.add(editRemark.getText().toString());
