@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String transactionAmount = "Transaction Amount";
     public static final String transactionRemark = "Transaction Remark";
     public static final String accountBalance = "Account Balance";
+    public static final String debitCredit = "Debit or Credit";
 
     private static Spinner spinnerAccount = null;
     private static EditText editDate = null;
@@ -182,6 +183,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DisplayResult.class);
         intent.putExtra(transactionAccount, spinnerAccount.getSelectedItem().toString());
         intent.putExtra(transactionDate, editDate.getText().toString());
+        if (chooseDebit.isChecked()) {
+            intent.putExtra(debitCredit, " (Debit)");
+        } else {
+            intent.putExtra(debitCredit, " (Credit)");
+        }
         intent.putExtra(transactionAmount, editAmount.getText().toString());
         intent.putExtra(transactionRemark, editRemark.getText().toString());
         if (output != null) {
