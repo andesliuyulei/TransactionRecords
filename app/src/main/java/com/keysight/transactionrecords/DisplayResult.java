@@ -17,9 +17,9 @@ public class DisplayResult extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.textView)).setText(
                 "New transaction has been added successfully." +
-                "\nAccount: " + intent.getStringExtra(MainActivity.transactionAccount) + intent.getStringExtra(MainActivity.debitCredit) +
+                "\nAccount: " + intent.getStringExtra(MainActivity.transactionAccount) +
                 "\nDate: " + intent.getStringExtra(MainActivity.transactionDate) +
-                "\nAmount: " + intent.getStringExtra(MainActivity.transactionAmount) +
+                "\nAmount: " + intent.getStringExtra(MainActivity.transactionAmount) + intent.getStringExtra(MainActivity.debitCredit) +
                 "\nRemark: " +  intent.getStringExtra(MainActivity.transactionRemark) +
                 "\nBalance: " + intent.getStringExtra(MainActivity.accountBalance)
         );
