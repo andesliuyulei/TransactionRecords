@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import java.io.IOException;
@@ -91,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private static EditText editDate = null;
     private static EditText editAmount = null;
     private static EditText editRemark = null;
+    private static RadioButton chooseDebit = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         editDate = (EditText) findViewById(R.id.editDate);
         editAmount = (EditText) findViewById(R.id.editAmount);
         editRemark = (EditText) findViewById(R.id.editRemark);
+        chooseDebit = (RadioButton) findViewById(R.id.radioButtonDebit);
 
         spinnerAccount.setAdapter(
                 new ArrayAdapter<String>(
@@ -401,6 +406,12 @@ public class MainActivity extends AppCompatActivity {
                     functionParameters.add(editAmount.getText().toString());
                     functionParameters.add(editRemark.getText().toString());
                     break;
+            }
+
+            if (chooseDebit.isChecked()) {
+                functionParameters.add(true);
+            } else {
+                functionParameters.add(false);
             }
 
             // Create an execution request object.
