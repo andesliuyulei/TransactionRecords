@@ -482,6 +482,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             mProgress.show();
+            mProgress.setCanceledOnTouchOutside(Boolean.FALSE);
         }
 
         @Override
