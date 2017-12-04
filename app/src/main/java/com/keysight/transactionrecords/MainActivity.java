@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -51,8 +52,8 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity {
-    static GoogleAccountCredential mCredential;
-    ProgressDialog mProgress;
+    static GoogleAccountCredential accountCredential;
+    ProgressDialog progressDialog;
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String scriptId_Maybank = "MK75Sp5IMNgQ4Nl6GZUdcSxU9l98eQNnp";
     private static final String scriptId_CIMB = "Mhf-AvlvNjbvPPLwsJY7VPkw9ezPKz0cG";
     //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
+    private static final String scriptId_MyBank = "MoNdSxfXDH8wP_ODK4qZ9IBU9l98eQNnp";
 
     public static final String transactionAccount = "Transaction Account";
     public static final String transactionDate = "Transaction Date";
@@ -94,20 +96,21 @@ public class MainActivity extends AppCompatActivity {
     private static Spinner spinnerAccount = null;
     private static EditText editDate = null;
     private static EditText editAmount = null;
-    private static EditText editRemark = null;
+    private static AutoCompleteTextView editRemark = null;
     private static RadioButton chooseDebit = null;
+
+    private static ArrayList<String> remarkList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mProgress = new ProgressDialog(this);
-        mProgress.setMessage("Calling Google Apps Script Execution API ...");
+        progressDialog = new ProgressDialog(this);
 
         spinnerAccount = (Spinner) findViewById(R.id.spinnerAccount);
         editDate = (EditText) findViewById(R.id.editDate);
         editAmount = (EditText) findViewById(R.id.editAmount);
-        editRemark = (EditText) findViewById(R.id.editRemark);
+        editRemark = (AutoCompleteTextView) findViewById(R.id.editRemark);
         chooseDebit = (RadioButton) findViewById(R.id.radioButtonDebit);
 
         spinnerAccount.setAdapter(
@@ -166,10 +169,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Initialize credentials and service object.
-        mCredential = GoogleAccountCredential.usingOAuth2(
+        accountCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(),
                 Arrays.asList(SCOPES)
         ).setBackOff(new ExponentialBackOff());
+        initializeDataFromApi();
+    }
+
+    private void initializeDataFromApi() {
+        if (! isGooglePlayServicesAvailable()) {
+            acquireGooglePlayServices();
+        } else if (accountCredential.getSelectedAccountName() == null) {
+            chooseAccount();
+        } else if (! isDeviceOnline()) {
+            //mOutputText.setText("No network connection available.");
+        } else {
+            new MakeRequestTask(accountCredential, scriptId_MyBank, "getRemarkList", null).execute();
+        }
     }
 
     /** Called when the user taps the Submit Transaction button */
@@ -204,14 +220,104 @@ public class MainActivity extends AppCompatActivity {
      * appropriate.
      */
     private void getResultsFromApi() {
-        if (! isGooglePlayServicesAvailable()) {
-            acquireGooglePlayServices();
-        } else if (mCredential.getSelectedAccountName() == null) {
-            chooseAccount();
-        } else if (! isDeviceOnline()) {
-            //mOutputText.setText("No network connection available.");
+        // ID of the script to call. Acquire this from the Apps Script editor,
+        // under Publish > Deploy as API executable.
+        String scriptId = null;
+        String functionName = null;
+        List<Object> functionParameters = new ArrayList<>();
+        String remark = editRemark.getText().toString();
+
+        switch (spinnerAccount.getSelectedItem().toString()) {
+            case account_Dbs_eMCA_LIU_YULEI_SGD:
+                scriptId = scriptId_DBS_POSB;
+                functionName = "newTransaction_eMCA_SGD";
+                functionParameters.add(editAmount.getText().toString());
+                break;
+            case account_Amex_True_Cashback_LIU_YULEI:
+                scriptId = scriptId_AMEX;
+                functionName = "newTransaction_True_Cashback";
+                functionParameters.add(editAmount.getText().toString());
+                break;
+            case account_Amex_True_Cashback_LI_CHANG:
+                scriptId = scriptId_AMEX;
+                functionName = "newTransaction_True_Cashback_LI_CHANG";
+                functionParameters.add(editDate.getText().toString());
+                functionParameters.add(editAmount.getText().toString());
+                break;
+            case account_Posb_Everyday_LIU_YULEI:
+                scriptId = scriptId_DBS_POSB;
+                functionName = "newTransaction_Posb_Everyday";
+                functionParameters.add(editDate.getText().toString());
+                functionParameters.add(editAmount.getText().toString());
+                functionParameters.add("Liu Yulei");
+                break;
+            case account_Posb_Everyday_LI_CHANG_S:
+                scriptId = scriptId_DBS_POSB;
+                functionName = "newTransaction_Posb_Everyday";
+                functionParameters.add(editDate.getText().toString());
+                functionParameters.add(editAmount.getText().toString());
+                functionParameters.add("Li Chang");
+                break;
+            case account_Ocbc_360_Account:
+                scriptId = scriptId_OCBC;
+                functionName = "newTransaction_360_Account";
+                functionParameters.add(editDate.getText().toString());
+                functionParameters.add(editAmount.getText().toString());
+                break;
+            case account_Boc_Savings_Suqian_LI_CHANG:
+                scriptId = scriptId_BOC;
+                functionName = "newTransaction_Savings_Suqian";
+                functionParameters.add(editDate.getText().toString());
+                functionParameters.add(editAmount.getText().toString());
+                break;
+            case account_Ocbc_365_Visa:
+                scriptId = scriptId_OCBC;
+                functionName = "newTransaction_365_Visa";
+                functionParameters.add(editDate.getText().toString());
+                functionParameters.add(editAmount.getText().toString());
+                break;
+            case account_Maybank_Family_n_Friends:
+                scriptId = scriptId_Maybank;
+                functionName = "newTransaction_Family_n_Friends";
+                functionParameters.add(editDate.getText().toString());
+                functionParameters.add(editAmount.getText().toString());
+                break;
+            case account_Posb_Savings_LIU_YULEI:
+                scriptId = scriptId_DBS_POSB;
+                functionName = "newTransaction_Posb_Savings";
+                functionParameters.add("LIU YULEI");
+                functionParameters.add(editDate.getText().toString());
+                functionParameters.add(editAmount.getText().toString());
+                break;
+            case account_Posb_Savings_LI_CHANG:
+                scriptId = scriptId_DBS_POSB;
+                functionName = "newTransaction_Posb_Savings";
+                functionParameters.add("LI CHANG");
+                functionParameters.add(editDate.getText().toString());
+                functionParameters.add(editAmount.getText().toString());
+                break;
+            case account_Cimb_Visa_Signature:
+                scriptId = scriptId_CIMB;
+                functionName = "newTransaction_Visa_Signature";
+                functionParameters.add(editDate.getText().toString());
+                functionParameters.add(editAmount.getText().toString());
+                break;
+        }
+
+        functionParameters.add(remark);
+        if (chooseDebit.isChecked()) {
+            functionParameters.add(true);
         } else {
-            new MakeRequestTask(mCredential).execute();
+            functionParameters.add(false);
+        }
+
+        new MakeRequestTask(accountCredential, scriptId, functionName, functionParameters).execute();
+        if (remarkList.indexOf(remark) < 0) {
+            remarkList.add(remark);
+            editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
+            List<Object> remarkToAdd = new ArrayList<>();
+            remarkToAdd.add(remark);
+            new MakeRequestTask(accountCredential, scriptId_MyBank, "addRemark", remarkToAdd).execute();
         }
     }
 
@@ -253,11 +359,11 @@ public class MainActivity extends AppCompatActivity {
         if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS)) {
             String accountName = getPreferences(Context.MODE_PRIVATE).getString(PREF_ACCOUNT_NAME, null);
             if (accountName != null) {
-                mCredential.setSelectedAccountName(accountName);
-                getResultsFromApi();
+                accountCredential.setSelectedAccountName(accountName);
+                initializeDataFromApi();
             } else {
                 // Start a dialog from which the user can choose an account
-                startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+                startActivityForResult(accountCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
             }
         } else {
             // Request the GET_ACCOUNTS permission via a user dialog
@@ -287,10 +393,16 @@ public class MainActivity extends AppCompatActivity {
     private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
         private com.google.api.services.script.Script mService = null;
         private Exception mLastError = null;
+        private String scriptId = null;
+        private String functionName = null;
+        private List<Object> functionParameters = null;
 
-        MakeRequestTask(GoogleAccountCredential credential) {
+        MakeRequestTask(GoogleAccountCredential credential, String script, String function, List<Object> parameters) {
             HttpTransport transport = AndroidHttp.newCompatibleTransport();
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+            scriptId = script;
+            functionName = function;
+            functionParameters = parameters;
             mService = new com.google.api.services.script.Script.Builder(
                     transport, jsonFactory, setHttpTimeout(credential)
             ).setApplicationName("TransactionRecords").build();
@@ -319,110 +431,9 @@ public class MainActivity extends AppCompatActivity {
          * @throws IOException
          */
         private List<String> getDataFromApi() throws IOException, GoogleAuthException {
-            // ID of the script to call. Acquire this from the Apps Script editor,
-            // under Publish > Deploy as API executable.
-            String scriptId = null;
-            String functionName = null;
-            List<Object> functionParameters = new ArrayList<>();
-
-            switch (spinnerAccount.getSelectedItem().toString()) {
-                case account_Dbs_eMCA_LIU_YULEI_SGD:
-                    scriptId = scriptId_DBS_POSB;
-                    functionName = "newTransaction_eMCA_SGD";
-                    functionParameters.add(editAmount.getText().toString());
-                    functionParameters.add(editRemark.getText().toString());
-                    break;
-                case account_Amex_True_Cashback_LIU_YULEI:
-                    scriptId = scriptId_AMEX;
-                    functionName = "newTransaction_True_Cashback";
-                    functionParameters.add(editAmount.getText().toString());
-                    functionParameters.add(editRemark.getText().toString());
-                    break;
-                case account_Amex_True_Cashback_LI_CHANG:
-                    scriptId = scriptId_AMEX;
-                    functionName = "newTransaction_True_Cashback_LI_CHANG";
-                    functionParameters.add(editDate.getText().toString());
-                    functionParameters.add(editAmount.getText().toString());
-                    functionParameters.add(editRemark.getText().toString());
-                    break;
-                case account_Posb_Everyday_LIU_YULEI:
-                    scriptId = scriptId_DBS_POSB;
-                    functionName = "newTransaction_Posb_Everyday";
-                    functionParameters.add(editDate.getText().toString());
-                    functionParameters.add(editAmount.getText().toString());
-                    functionParameters.add("Liu Yulei");
-                    functionParameters.add(editRemark.getText().toString());
-                    break;
-                case account_Posb_Everyday_LI_CHANG_S:
-                    scriptId = scriptId_DBS_POSB;
-                    functionName = "newTransaction_Posb_Everyday";
-                    functionParameters.add(editDate.getText().toString());
-                    functionParameters.add(editAmount.getText().toString());
-                    functionParameters.add("Li Chang");
-                    functionParameters.add(editRemark.getText().toString());
-                    break;
-                case account_Ocbc_360_Account:
-                    scriptId = scriptId_OCBC;
-                    functionName = "newTransaction_360_Account";
-                    functionParameters.add(editDate.getText().toString());
-                    functionParameters.add(editAmount.getText().toString());
-                    functionParameters.add(editRemark.getText().toString());
-                    break;
-                case account_Boc_Savings_Suqian_LI_CHANG:
-                    scriptId = scriptId_BOC;
-                    functionName = "newTransaction_Savings_Suqian";
-                    functionParameters.add(editDate.getText().toString());
-                    functionParameters.add(editAmount.getText().toString());
-                    functionParameters.add(editRemark.getText().toString());
-                    break;
-                case account_Ocbc_365_Visa:
-                    scriptId = scriptId_OCBC;
-                    functionName = "newTransaction_365_Visa";
-                    functionParameters.add(editDate.getText().toString());
-                    functionParameters.add(editAmount.getText().toString());
-                    functionParameters.add(editRemark.getText().toString());
-                    break;
-                case account_Maybank_Family_n_Friends:
-                    scriptId = scriptId_Maybank;
-                    functionName = "newTransaction_Family_n_Friends";
-                    functionParameters.add(editDate.getText().toString());
-                    functionParameters.add(editAmount.getText().toString());
-                    functionParameters.add(editRemark.getText().toString());
-                    break;
-                case account_Posb_Savings_LIU_YULEI:
-                    scriptId = scriptId_DBS_POSB;
-                    functionName = "newTransaction_Posb_Savings";
-                    functionParameters.add("LIU YULEI");
-                    functionParameters.add(editDate.getText().toString());
-                    functionParameters.add(editAmount.getText().toString());
-                    functionParameters.add(editRemark.getText().toString());
-                    break;
-                case account_Posb_Savings_LI_CHANG:
-                    scriptId = scriptId_DBS_POSB;
-                    functionName = "newTransaction_Posb_Savings";
-                    functionParameters.add("LI CHANG");
-                    functionParameters.add(editDate.getText().toString());
-                    functionParameters.add(editAmount.getText().toString());
-                    functionParameters.add(editRemark.getText().toString());
-                    break;
-                case account_Cimb_Visa_Signature:
-                    scriptId = scriptId_CIMB;
-                    functionName = "newTransaction_Visa_Signature";
-                    functionParameters.add(editDate.getText().toString());
-                    functionParameters.add(editAmount.getText().toString());
-                    functionParameters.add(editRemark.getText().toString());
-                    break;
-            }
-
-            if (chooseDebit.isChecked()) {
-                functionParameters.add(true);
-            } else {
-                functionParameters.add(false);
-            }
-
             // Create an execution request object.
             ExecutionRequest request = new ExecutionRequest()
-                    .setDevMode(Boolean.TRUE)
+                    .setDevMode(Boolean.TRUE) //TODO disable it before release.
                     .setParameters(functionParameters)
                     .setFunction(functionName);
 
@@ -481,19 +492,32 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            mProgress.show();
-            mProgress.setCanceledOnTouchOutside(Boolean.FALSE);
+            if (scriptId.equals(scriptId_MyBank) && functionName.equals("getRemarkList")) {
+                progressDialog.setMessage("Initializing data from the backend system ...");
+            } else {
+                progressDialog.setMessage("Adding transaction record in the backend system ...");
+            }
+            progressDialog.show();
+            progressDialog.setCanceledOnTouchOutside(Boolean.FALSE);
         }
 
         @Override
         protected void onPostExecute(List<String> output) {
-            mProgress.hide();
-            displayResult(output);
+            if (scriptId.equals(scriptId_MyBank)) {
+                if (functionName.equals("getRemarkList")) {
+                    progressDialog.hide();
+                    remarkList = (ArrayList<String>) output;
+                    editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
+                }
+            } else {
+                progressDialog.hide();
+                displayResult(output);
+            }
         }
 
         @Override
         protected void onCancelled() {
-            mProgress.hide();
+            progressDialog.hide();
             if (mLastError != null) {
                 if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
                     showGooglePlayServicesAvailabilityErrorDialog(
@@ -570,7 +594,7 @@ public class MainActivity extends AppCompatActivity {
                     //        "This app requires Google Play Services. Please install " +
                     //                "Google Play Services on your device and relaunch this app.");
                 } else {
-                    getResultsFromApi();
+                    initializeDataFromApi();
                 }
                 break;
             case REQUEST_ACCOUNT_PICKER:
@@ -584,14 +608,14 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
-                        mCredential.setSelectedAccountName(accountName);
-                        getResultsFromApi();
+                        accountCredential.setSelectedAccountName(accountName);
+                        initializeDataFromApi();
                     }
                 }
                 break;
             case REQUEST_AUTHORIZATION:
                 if (resultCode == RESULT_OK) {
-                    getResultsFromApi();
+                    initializeDataFromApi();
                 }
                 break;
         }

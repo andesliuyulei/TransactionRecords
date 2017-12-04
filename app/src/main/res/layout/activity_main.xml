@@ -88,7 +88,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/radioGroupDebitCredeit" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/editRemark"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
