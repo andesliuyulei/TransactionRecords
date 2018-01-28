@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String account_Boc_Savings_Suqian_LI_CHANG = "BOC Savings Suqian - LI CHANG";
     private static final String account_Maybank_Family_n_Friends = "Maybank Family & Friends";
     private static final String account_Cimb_Visa_Signature = "CIMB Visa Signature";
+    private static final String account_Rws_Invites = "RWS Invites$ (Sentosa)";
     private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
     private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
     private static final String scriptId_OCBC = "MV2T0hPrD2ktnUOLUHHbKGkw9ezPKz0cG";
@@ -129,7 +130,8 @@ public class MainActivity extends AppCompatActivity {
                                 account_Ocbc_365_Visa,
                                 account_Boc_Savings_Suqian_LI_CHANG,
                                 account_Maybank_Family_n_Friends,
-                                account_Cimb_Visa_Signature
+                                account_Cimb_Visa_Signature,
+                                account_Rws_Invites
                         }
                 )
         );
