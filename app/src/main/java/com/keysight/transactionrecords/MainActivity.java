@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
     private static EditText editAmount = null;
     private static AutoCompleteTextView editRemark = null;
     private static RadioButton chooseDebit = null;
+    private static RadioButton chooseCredit = null;
 
     private static ArrayList<String> remarkList = null;
 
@@ -108,11 +110,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         progressDialog = new ProgressDialog(this);
 
-        spinnerAccount = (Spinner) findViewById(R.id.spinnerAccount);
-        editDate = (EditText) findViewById(R.id.editDate);
-        editAmount = (EditText) findViewById(R.id.editAmount);
-        editRemark = (AutoCompleteTextView) findViewById(R.id.editRemark);
-        chooseDebit = (RadioButton) findViewById(R.id.radioButtonDebit);
+        spinnerAccount = findViewById(R.id.spinnerAccount);
+        editDate = findViewById(R.id.editDate);
+        editAmount = findViewById(R.id.editAmount);
+        editRemark = findViewById(R.id.editRemark);
+        chooseDebit = findViewById(R.id.radioButtonDebit);
+        chooseCredit = findViewById(R.id.radioButtonCredit);
 
         spinnerAccount.setAdapter(
                 new ArrayAdapter<String>(
@@ -135,6 +138,24 @@ public class MainActivity extends AppCompatActivity {
                         }
                 )
         );
+
+        spinnerAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getSelectedItem().toString().equals(account_Rws_Invites)) {
+                    chooseDebit.setText("Spend");
+                    chooseCredit.setText("Redeem");
+                } else {
+                    chooseDebit.setText("Debit");
+                    chooseCredit.setText("Credit");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         editDate.setText(
                 new SimpleDateFormat(
@@ -202,9 +223,17 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(transactionAccount, spinnerAccount.getSelectedItem().toString());
         intent.putExtra(transactionDate, editDate.getText().toString());
         if (chooseDebit.isChecked()) {
-            intent.putExtra(debitCredit, " (Debit)");
+            if (spinnerAccount.getSelectedItem().toString().equals(account_Rws_Invites)) {
+                intent.putExtra(debitCredit, " (Spend)");
+            } else {
+                intent.putExtra(debitCredit, " (Debit)");
+            }
         } else {
-            intent.putExtra(debitCredit, " (Credit)");
+            if (spinnerAccount.getSelectedItem().toString().equals(account_Rws_Invites)) {
+                intent.putExtra(debitCredit, " (Redeem)");
+            } else {
+                intent.putExtra(debitCredit, " (Credit)");
+            }
         }
         intent.putExtra(transactionAmount, editAmount.getText().toString());
         intent.putExtra(transactionRemark, editRemark.getText().toString());
@@ -303,6 +332,14 @@ public class MainActivity extends AppCompatActivity {
                 functionName = "newTransaction_Visa_Signature";
                 functionParameters.add(editDate.getText().toString());
                 functionParameters.add(editAmount.getText().toString());
+                break;
+            case account_Rws_Invites:
+                scriptId = scriptId_MyBank;
+                functionName = "newTransaction_Rws_Invites";
+                functionParameters.add(editDate.getText().toString());
+                functionParameters.add(editAmount.getText().toString());
+                break;
+            default:
                 break;
         }
 
@@ -505,21 +542,18 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<String> output) {
-            if (scriptId.equals(scriptId_MyBank)) {
-                if (functionName.equals("getRemarkList")) {
-                    progressDialog.hide();
-                    remarkList = (ArrayList<String>) output;
-                    editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
-                }
+            progressDialog.dismiss();
+            if (scriptId.equals(scriptId_MyBank) && functionName.equals("getRemarkList")) {
+                remarkList = (ArrayList<String>) output;
+                editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
             } else {
-                progressDialog.hide();
                 displayResult(output);
             }
         }
 
         @Override
         protected void onCancelled() {
-            progressDialog.hide();
+            progressDialog.dismiss();
             if (mLastError != null) {
                 if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
                     showGooglePlayServicesAvailabilityErrorDialog(
