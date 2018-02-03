@@ -262,6 +262,7 @@ public class MainActivity extends AppCompatActivity {
             case account_Dbs_eMCA_LIU_YULEI_SGD:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_eMCA_SGD";
+                functionParameters.add(editDate.getText().toString());
                 functionParameters.add(editAmount.getText().toString());
                 break;
             case account_Amex_True_Cashback_LIU_YULEI:
