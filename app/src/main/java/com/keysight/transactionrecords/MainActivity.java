@@ -258,87 +258,64 @@ public class MainActivity extends AppCompatActivity {
         List<Object> functionParameters = new ArrayList<>();
         String remark = editRemark.getText().toString();
 
+        functionParameters.add(editDate.getText().toString());
+        functionParameters.add(editAmount.getText().toString());
         switch (spinnerAccount.getSelectedItem().toString()) {
             case account_Dbs_eMCA_LIU_YULEI_SGD:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_eMCA_SGD";
-                functionParameters.add(editDate.getText().toString());
-                functionParameters.add(editAmount.getText().toString());
                 break;
             case account_Amex_True_Cashback_LIU_YULEI:
                 scriptId = scriptId_AMEX;
                 functionName = "newTransaction_True_Cashback";
-                functionParameters.add(editAmount.getText().toString());
                 break;
             case account_Amex_True_Cashback_LI_CHANG:
                 scriptId = scriptId_AMEX;
                 functionName = "newTransaction_True_Cashback_LI_CHANG";
-                functionParameters.add(editDate.getText().toString());
-                functionParameters.add(editAmount.getText().toString());
                 break;
             case account_Posb_Everyday_LIU_YULEI:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_Posb_Everyday";
-                functionParameters.add(editDate.getText().toString());
-                functionParameters.add(editAmount.getText().toString());
                 functionParameters.add("Liu Yulei");
                 break;
             case account_Posb_Everyday_LI_CHANG_S:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_Posb_Everyday";
-                functionParameters.add(editDate.getText().toString());
-                functionParameters.add(editAmount.getText().toString());
                 functionParameters.add("Li Chang");
                 break;
             case account_Ocbc_360_Account:
                 scriptId = scriptId_OCBC;
                 functionName = "newTransaction_360_Account";
-                functionParameters.add(editDate.getText().toString());
-                functionParameters.add(editAmount.getText().toString());
                 break;
             case account_Boc_Savings_Suqian_LI_CHANG:
                 scriptId = scriptId_BOC;
                 functionName = "newTransaction_Savings_Suqian";
-                functionParameters.add(editDate.getText().toString());
-                functionParameters.add(editAmount.getText().toString());
                 break;
             case account_Ocbc_365_Visa:
                 scriptId = scriptId_OCBC;
                 functionName = "newTransaction_365_Visa";
-                functionParameters.add(editDate.getText().toString());
-                functionParameters.add(editAmount.getText().toString());
                 break;
             case account_Maybank_Family_n_Friends:
                 scriptId = scriptId_Maybank;
                 functionName = "newTransaction_Family_n_Friends";
-                functionParameters.add(editDate.getText().toString());
-                functionParameters.add(editAmount.getText().toString());
                 break;
             case account_Posb_Savings_LIU_YULEI:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_Posb_Savings";
                 functionParameters.add("LIU YULEI");
-                functionParameters.add(editDate.getText().toString());
-                functionParameters.add(editAmount.getText().toString());
                 break;
             case account_Posb_Savings_LI_CHANG:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_Posb_Savings";
                 functionParameters.add("LI CHANG");
-                functionParameters.add(editDate.getText().toString());
-                functionParameters.add(editAmount.getText().toString());
                 break;
             case account_Cimb_Visa_Signature:
                 scriptId = scriptId_CIMB;
                 functionName = "newTransaction_Visa_Signature";
-                functionParameters.add(editDate.getText().toString());
-                functionParameters.add(editAmount.getText().toString());
                 break;
             case account_Rws_Invites:
                 scriptId = scriptId_MyBank;
                 functionName = "newTransaction_Rws_Invites";
-                functionParameters.add(editDate.getText().toString());
-                functionParameters.add(editAmount.getText().toString());
                 break;
             default:
                 break;
