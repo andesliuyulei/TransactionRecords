@@ -541,12 +541,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(List<String> output) {
+        protected void onPostExecute(List<String> output)
+        {
             progressDialog.dismiss();
-            if (scriptId.equals(scriptId_MyBank) && functionName.equals("getRemarkList")) {
+            if (scriptId.equals(scriptId_MyBank) && functionName.equals("getRemarkList"))
+            {
                 remarkList = (ArrayList<String>) output;
                 editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
-            } else {
+            }
+            else if (scriptId.equals(scriptId_MyBank) && functionName.equals("addRemark"))
+            {
+                //do nothing here.
+            }
+            else
+            {
                 displayResult(output);
             }
         }
