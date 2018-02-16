@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String account_Maybank_Family_n_Friends = "Maybank Family & Friends";
     private static final String account_Cimb_Visa_Signature = "CIMB Visa Signature";
     private static final String account_Rws_Invites = "RWS Invites$ (Sentosa)";
+    private static final String account_Frasers_Rewards = "FRASERS Rewards";
     private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
     private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
     private static final String scriptId_OCBC = "MV2T0hPrD2ktnUOLUHHbKGkw9ezPKz0cG";
@@ -134,7 +135,8 @@ public class MainActivity extends AppCompatActivity {
                                 account_Boc_Savings_Suqian_LI_CHANG,
                                 account_Maybank_Family_n_Friends,
                                 account_Cimb_Visa_Signature,
-                                account_Rws_Invites
+                                account_Rws_Invites,
+                                account_Frasers_Rewards
                         }
                 )
         );
@@ -142,7 +144,8 @@ public class MainActivity extends AppCompatActivity {
         spinnerAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (parent.getSelectedItem().toString().equals(account_Rws_Invites)) {
+                if (parent.getSelectedItem().toString().equals(account_Rws_Invites) ||
+                        parent.getSelectedItem().toString().equals(account_Frasers_Rewards)) {
                     chooseDebit.setText("Spend");
                     chooseCredit.setText("Redeem");
                 } else {
@@ -223,13 +226,15 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(transactionAccount, spinnerAccount.getSelectedItem().toString());
         intent.putExtra(transactionDate, editDate.getText().toString());
         if (chooseDebit.isChecked()) {
-            if (spinnerAccount.getSelectedItem().toString().equals(account_Rws_Invites)) {
+            if (spinnerAccount.getSelectedItem().toString().equals(account_Rws_Invites) ||
+                    spinnerAccount.getSelectedItem().toString().equals(account_Frasers_Rewards)) {
                 intent.putExtra(debitCredit, " (Spend)");
             } else {
                 intent.putExtra(debitCredit, " (Debit)");
             }
         } else {
-            if (spinnerAccount.getSelectedItem().toString().equals(account_Rws_Invites)) {
+            if (spinnerAccount.getSelectedItem().toString().equals(account_Rws_Invites) ||
+                    spinnerAccount.getSelectedItem().toString().equals(account_Frasers_Rewards)) {
                 intent.putExtra(debitCredit, " (Redeem)");
             } else {
                 intent.putExtra(debitCredit, " (Credit)");
@@ -316,6 +321,10 @@ public class MainActivity extends AppCompatActivity {
             case account_Rws_Invites:
                 scriptId = scriptId_MyBank;
                 functionName = "newTransaction_Rws_Invites";
+                break;
+            case account_Frasers_Rewards:
+                scriptId = scriptId_MyBank;
+                functionName = "newTransaction_Frasers_Rewards";
                 break;
             default:
                 break;
