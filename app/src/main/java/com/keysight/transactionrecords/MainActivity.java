@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String account_Dbs_eMCA_LIU_YULEI_SGD = "DBS eMCA - LIU YULEI (SGD)";
     private static final String account_Amex_True_Cashback_LIU_YULEI = "AMEX True Cashback - LIU YULEI";
-    private static final String account_Amex_True_Cashback_LI_CHANG = "AMEX True Cashback - LI CHANG";
+    //private static final String account_Amex_True_Cashback_LI_CHANG = "AMEX True Cashback - LI CHANG";
     private static final String account_Posb_Everyday_LIU_YULEI = "POSB Everyday - LIU YULEI (Main)";
     private static final String account_Posb_Everyday_LI_CHANG_S = "POSB Everyday - LI CHANG (Supplementary)";
     private static final String account_Posb_Savings_LIU_YULEI = "POSB Savings - LIU YULEI";
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                         new String[] {
                                 account_Dbs_eMCA_LIU_YULEI_SGD,
                                 account_Amex_True_Cashback_LIU_YULEI,
-                                account_Amex_True_Cashback_LI_CHANG,
+                                //account_Amex_True_Cashback_LI_CHANG,
                                 account_Posb_Everyday_LIU_YULEI,
                                 account_Posb_Everyday_LI_CHANG_S,
                                 account_Posb_Savings_LIU_YULEI,
@@ -273,11 +273,11 @@ public class MainActivity extends AppCompatActivity {
             case account_Amex_True_Cashback_LIU_YULEI:
                 scriptId = scriptId_AMEX;
                 functionName = "newTransaction_True_Cashback";
-                break;
+                break;/*
             case account_Amex_True_Cashback_LI_CHANG:
                 scriptId = scriptId_AMEX;
                 functionName = "newTransaction_True_Cashback_LI_CHANG";
-                break;
+                break;*/
             case account_Posb_Everyday_LIU_YULEI:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_Posb_Everyday";
