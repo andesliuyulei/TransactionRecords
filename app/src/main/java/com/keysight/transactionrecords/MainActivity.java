@@ -72,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String account_Posb_Everyday_LIU_YULEI = "POSB Everyday - LIU YULEI (Main)";
     private static final String account_Posb_Everyday_LI_CHANG_S = "POSB Everyday - LI CHANG (Supplementary)";
     private static final String account_Posb_Savings_LIU_YULEI = "POSB Savings - LIU YULEI";
-    private static final String account_Posb_Savings_LI_CHANG = "POSB Savings - LI CHANG";
+    //private static final String account_Posb_Savings_LI_CHANG = "POSB Savings - LI CHANG";
     private static final String account_Ocbc_360_Account = "OCBC 360 Account";
     private static final String account_Ocbc_365_Visa = "OCBC 365 VISA";
     private static final String account_Boc_Savings_Suqian_LI_CHANG = "BOC Savings Suqian - LI CHANG";
-    private static final String account_Maybank_Family_n_Friends = "Maybank Family & Friends";
+    //private static final String account_Maybank_Family_n_Friends = "Maybank Family & Friends";
     private static final String account_Cimb_Visa_Signature = "CIMB Visa Signature";
     private static final String account_Rws_Invites = "RWS Invites$ (Sentosa)";
     private static final String account_Frasers_Rewards = "FRASERS Rewards";
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
     private static final String scriptId_OCBC = "MV2T0hPrD2ktnUOLUHHbKGkw9ezPKz0cG";
     private static final String scriptId_BOC = "M6X7qbK-Sn1QkE66425Rf2RU9l98eQNnp";
-    private static final String scriptId_Maybank = "MK75Sp5IMNgQ4Nl6GZUdcSxU9l98eQNnp";
+    //private static final String scriptId_Maybank = "MK75Sp5IMNgQ4Nl6GZUdcSxU9l98eQNnp";
     private static final String scriptId_CIMB = "Mhf-AvlvNjbvPPLwsJY7VPkw9ezPKz0cG";
     //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
     private static final String scriptId_MyBank = "MoNdSxfXDH8wP_ODK4qZ9IBU9l98eQNnp";
@@ -129,11 +129,11 @@ public class MainActivity extends AppCompatActivity {
                                 account_Posb_Everyday_LIU_YULEI,
                                 account_Posb_Everyday_LI_CHANG_S,
                                 account_Posb_Savings_LIU_YULEI,
-                                account_Posb_Savings_LI_CHANG,
+                                //account_Posb_Savings_LI_CHANG,
                                 account_Ocbc_360_Account,
                                 account_Ocbc_365_Visa,
                                 account_Boc_Savings_Suqian_LI_CHANG,
-                                account_Maybank_Family_n_Friends,
+                                //account_Maybank_Family_n_Friends,
                                 account_Cimb_Visa_Signature,
                                 account_Rws_Invites,
                                 account_Frasers_Rewards
@@ -299,21 +299,21 @@ public class MainActivity extends AppCompatActivity {
             case account_Ocbc_365_Visa:
                 scriptId = scriptId_OCBC;
                 functionName = "newTransaction_365_Visa";
-                break;
+                break;/*
             case account_Maybank_Family_n_Friends:
                 scriptId = scriptId_Maybank;
                 functionName = "newTransaction_Family_n_Friends";
-                break;
+                break;*/
             case account_Posb_Savings_LIU_YULEI:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_Posb_Savings";
                 functionParameters.add("LIU YULEI");
-                break;
+                break;/*
             case account_Posb_Savings_LI_CHANG:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_Posb_Savings";
                 functionParameters.add("LI CHANG");
-                break;
+                break;*/
             case account_Cimb_Visa_Signature:
                 scriptId = scriptId_CIMB;
                 functionName = "newTransaction_Visa_Signature";
