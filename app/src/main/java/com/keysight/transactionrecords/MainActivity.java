@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             "https://www.googleapis.com/auth/script.external_request"
     };
 
-    private static final String account_Dbs_eMCA_LIU_YULEI_SGD = "DBS eMCA - LIU YULEI (SGD)";
+    //private static final String account_Dbs_eMCA_LIU_YULEI_SGD = "DBS eMCA - LIU YULEI (SGD)";
     private static final String account_Amex_True_Cashback_LIU_YULEI = "AMEX True Cashback - LIU YULEI";
     //private static final String account_Amex_True_Cashback_LI_CHANG = "AMEX True Cashback - LI CHANG";
     private static final String account_Posb_Everyday_LIU_YULEI = "POSB Everyday - LIU YULEI (Main)";
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String account_Ocbc_365_Visa = "OCBC 365 VISA";
     private static final String account_Boc_Savings_Suqian_LI_CHANG = "BOC Savings Suqian - LI CHANG";
     //private static final String account_Maybank_Family_n_Friends = "Maybank Family & Friends";
-    private static final String account_Cimb_Visa_Signature = "CIMB Visa Signature";
+    //private static final String account_Cimb_Visa_Signature = "CIMB Visa Signature";
     private static final String account_Rws_Invites = "RWS Invites$ (Sentosa)";
     private static final String account_Frasers_Rewards = "FRASERS Rewards";
     private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String scriptId_OCBC = "MV2T0hPrD2ktnUOLUHHbKGkw9ezPKz0cG";
     private static final String scriptId_BOC = "M6X7qbK-Sn1QkE66425Rf2RU9l98eQNnp";
     //private static final String scriptId_Maybank = "MK75Sp5IMNgQ4Nl6GZUdcSxU9l98eQNnp";
-    private static final String scriptId_CIMB = "Mhf-AvlvNjbvPPLwsJY7VPkw9ezPKz0cG";
+    //private static final String scriptId_CIMB = "Mhf-AvlvNjbvPPLwsJY7VPkw9ezPKz0cG";
     //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
     private static final String scriptId_MyBank = "MoNdSxfXDH8wP_ODK4qZ9IBU9l98eQNnp";
 
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                         this,
                         android.R.layout.simple_spinner_item,
                         new String[] {
-                                account_Dbs_eMCA_LIU_YULEI_SGD,
+                                //account_Dbs_eMCA_LIU_YULEI_SGD,
                                 account_Amex_True_Cashback_LIU_YULEI,
                                 //account_Amex_True_Cashback_LI_CHANG,
                                 account_Posb_Everyday_LIU_YULEI,
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                                 account_Ocbc_365_Visa,
                                 account_Boc_Savings_Suqian_LI_CHANG,
                                 //account_Maybank_Family_n_Friends,
-                                account_Cimb_Visa_Signature,
+                                //account_Cimb_Visa_Signature,
                                 account_Rws_Invites,
                                 account_Frasers_Rewards
                         }
@@ -266,10 +266,10 @@ public class MainActivity extends AppCompatActivity {
         functionParameters.add(editDate.getText().toString());
         functionParameters.add(editAmount.getText().toString());
         switch (spinnerAccount.getSelectedItem().toString()) {
-            case account_Dbs_eMCA_LIU_YULEI_SGD:
+            /*case account_Dbs_eMCA_LIU_YULEI_SGD:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_eMCA_SGD";
-                break;
+                break;*/
             case account_Amex_True_Cashback_LIU_YULEI:
                 scriptId = scriptId_AMEX;
                 functionName = "newTransaction_True_Cashback";
@@ -314,10 +314,10 @@ public class MainActivity extends AppCompatActivity {
                 functionName = "newTransaction_Posb_Savings";
                 functionParameters.add("LI CHANG");
                 break;*/
-            case account_Cimb_Visa_Signature:
+            /*case account_Cimb_Visa_Signature:
                 scriptId = scriptId_CIMB;
                 functionName = "newTransaction_Visa_Signature";
-                break;
+                break;*/
             case account_Rws_Invites:
                 scriptId = scriptId_MyBank;
                 functionName = "newTransaction_Rws_Invites";
