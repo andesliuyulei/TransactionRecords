@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     //private static final String account_Posb_Savings_LI_CHANG = "POSB Savings - LI CHANG";
     private static final String account_Ocbc_360_Account = "OCBC 360 Account";
     private static final String account_Ocbc_365_Visa = "OCBC 365 VISA";
+    private static final String account_Ocbc_Cda_Liu_Xintong = "OCBC CDA LIU XINTONG";
     private static final String account_Boc_Savings_Suqian_LI_CHANG = "BOC Savings Suqian - LI CHANG";
     //private static final String account_Maybank_Family_n_Friends = "Maybank Family & Friends";
     //private static final String account_Cimb_Visa_Signature = "CIMB Visa Signature";
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                                 //account_Posb_Savings_LI_CHANG,
                                 account_Ocbc_360_Account,
                                 account_Ocbc_365_Visa,
+                                account_Ocbc_Cda_Liu_Xintong,
                                 account_Boc_Savings_Suqian_LI_CHANG,
                                 //account_Maybank_Family_n_Friends,
                                 //account_Cimb_Visa_Signature,
@@ -299,6 +301,10 @@ public class MainActivity extends AppCompatActivity {
             case account_Ocbc_365_Visa:
                 scriptId = scriptId_OCBC;
                 functionName = "newTransaction_365_Visa";
+                break;
+            case account_Ocbc_Cda_Liu_Xintong:
+                scriptId = scriptId_OCBC;
+                functionName = "newTransaction_CDA_LIU_XINTONG";
                 break;/*
             case account_Maybank_Family_n_Friends:
                 scriptId = scriptId_Maybank;
