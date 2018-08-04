@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     //private static final String account_Cimb_Visa_Signature = "CIMB Visa Signature";
     private static final String account_Rws_Invites = "RWS Invites$ (Sentosa)";
     private static final String account_Frasers_Rewards = "FRASERS Rewards";
+    private static final String account_Kopitiam = "Kopitiam";
     private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
     private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
     private static final String scriptId_OCBC = "MV2T0hPrD2ktnUOLUHHbKGkw9ezPKz0cG";
@@ -138,7 +139,8 @@ public class MainActivity extends AppCompatActivity {
                                 //account_Maybank_Family_n_Friends,
                                 //account_Cimb_Visa_Signature,
                                 account_Rws_Invites,
-                                account_Frasers_Rewards
+                                account_Frasers_Rewards,
+                                account_Kopitiam
                         }
                 )
         );
@@ -150,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
                         parent.getSelectedItem().toString().equals(account_Frasers_Rewards)) {
                     chooseDebit.setText("Spend");
                     chooseCredit.setText("Redeem");
+                } else if (parent.getSelectedItem().toString().equals(account_Kopitiam)) {
+                    chooseDebit.setText("Sub Total");
+                    chooseCredit.setText("Top Up");
                 } else {
                     chooseDebit.setText("Debit");
                     chooseCredit.setText("Credit");
@@ -331,6 +336,10 @@ public class MainActivity extends AppCompatActivity {
             case account_Frasers_Rewards:
                 scriptId = scriptId_MyBank;
                 functionName = "newTransaction_Frasers_Rewards";
+                break;
+            case account_Kopitiam:
+                scriptId = scriptId_MyBank;
+                functionName = "newTransaction_Kopitiam";
                 break;
             default:
                 break;
