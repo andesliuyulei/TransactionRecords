@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     //private static final String account_Dbs_eMCA_LIU_YULEI_SGD = "DBS eMCA - LIU YULEI (SGD)";
     private static final String account_Amex_True_Cashback_LIU_YULEI = "AMEX True Cashback - LIU YULEI";
     //private static final String account_Amex_True_Cashback_LI_CHANG = "AMEX True Cashback - LI CHANG";
-    private static final String account_Posb_Everyday_LIU_YULEI = "POSB Everyday - LIU YULEI (Main)";
+    private static final String account_Posb_Everyday_LIU_YULEI = "POSB Everyday - LIU YULEI (Principle)";
     private static final String account_Posb_Everyday_LI_CHANG_S = "POSB Everyday - LI CHANG (Supplementary)";
     private static final String account_Posb_Savings_LIU_YULEI = "POSB Savings - LIU YULEI";
     //private static final String account_Posb_Savings_LI_CHANG = "POSB Savings - LI CHANG";
@@ -82,12 +82,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String account_Rws_Invites = "RWS Invites$ (Sentosa)";
     private static final String account_Frasers_Rewards = "FRASERS Rewards";
     private static final String account_Kopitiam = "Kopitiam";
+    private static final String account_Cimb_Platinum_LI_CHANG = "CIMB Platinum LI CHANG (Principle)";
+    private static final String account_Cimb_Platinum_LIU_YULEI_S = "CIMB Platinum LIU YULEI (Supplementary)";
     private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
     private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
     private static final String scriptId_OCBC = "MV2T0hPrD2ktnUOLUHHbKGkw9ezPKz0cG";
     private static final String scriptId_BOC = "M6X7qbK-Sn1QkE66425Rf2RU9l98eQNnp";
     //private static final String scriptId_Maybank = "MK75Sp5IMNgQ4Nl6GZUdcSxU9l98eQNnp";
-    //private static final String scriptId_CIMB = "Mhf-AvlvNjbvPPLwsJY7VPkw9ezPKz0cG";
+    private static final String scriptId_CIMB = "Mhf-AvlvNjbvPPLwsJY7VPkw9ezPKz0cG";
     //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
     private static final String scriptId_MyBank = "MoNdSxfXDH8wP_ODK4qZ9IBU9l98eQNnp";
 
@@ -140,7 +142,9 @@ public class MainActivity extends AppCompatActivity {
                                 //account_Cimb_Visa_Signature,
                                 account_Rws_Invites,
                                 account_Frasers_Rewards,
-                                account_Kopitiam
+                                account_Kopitiam,
+                                account_Cimb_Platinum_LI_CHANG,
+                                account_Cimb_Platinum_LIU_YULEI_S
                         }
                 )
         );
@@ -340,6 +344,16 @@ public class MainActivity extends AppCompatActivity {
             case account_Kopitiam:
                 scriptId = scriptId_MyBank;
                 functionName = "newTransaction_Kopitiam";
+                break;
+            case account_Cimb_Platinum_LI_CHANG:
+                scriptId = scriptId_CIMB;
+                functionName = "newTransaction_PlatinumMastercard_LI_CHANG";
+                functionParameters.add("LI CHANG");
+                break;
+            case account_Cimb_Platinum_LIU_YULEI_S:
+                scriptId = scriptId_CIMB;
+                functionName = "newTransaction_PlatinumMastercard_LI_CHANG";
+                functionParameters.add("LIU YULEI");
                 break;
             default:
                 break;
