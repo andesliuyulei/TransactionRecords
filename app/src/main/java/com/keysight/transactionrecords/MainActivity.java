@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String account_Kopitiam = "Kopitiam";
     private static final String account_Cimb_Platinum_LI_CHANG = "CIMB Platinum LI CHANG (Principle)";
     private static final String account_Cimb_Platinum_LIU_YULEI_S = "CIMB Platinum LIU YULEI (Supplementary)";
+    private static final String account_Hsbc_Advance = "HSBC Advance VISA Platinum";
+
     private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
     private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
     private static final String scriptId_OCBC = "MV2T0hPrD2ktnUOLUHHbKGkw9ezPKz0cG";
@@ -92,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String scriptId_CIMB = "Mhf-AvlvNjbvPPLwsJY7VPkw9ezPKz0cG";
     //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
     private static final String scriptId_MyBank = "MoNdSxfXDH8wP_ODK4qZ9IBU9l98eQNnp";
+
+    //Project key (Deprecated) -> Script ID
+    private static final String scriptId_HSBC = "MMGOtFC0w-A98Zh7SQ7XdmxU9l98eQNnp";
 
     public static final String transactionAccount = "Transaction Account";
     public static final String transactionDate = "Transaction Date";
@@ -144,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
                                 account_Frasers_Rewards,
                                 account_Kopitiam,
                                 account_Cimb_Platinum_LI_CHANG,
-                                account_Cimb_Platinum_LIU_YULEI_S
+                                account_Cimb_Platinum_LIU_YULEI_S,
+                                account_Hsbc_Advance
                         }
                 )
         );
@@ -354,6 +360,10 @@ public class MainActivity extends AppCompatActivity {
                 scriptId = scriptId_CIMB;
                 functionName = "newTransaction_PlatinumMastercard_LI_CHANG";
                 functionParameters.add("LIU YULEI");
+                break;
+            case account_Hsbc_Advance:
+                scriptId = scriptId_HSBC;
+                functionName = "newTransaction_Advance_MobileApp";
                 break;
             default:
                 break;
