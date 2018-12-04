@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String[] SCOPES = {
             "https://www.googleapis.com/auth/drive",
             "https://www.googleapis.com/auth/spreadsheets",
-            "https://www.googleapis.com/auth/script.external_request"
+            "https://www.googleapis.com/auth/script.external_request",
+            "https://www.googleapis.com/auth/documents" //2018-12-04: added.
     };
 
     //private static final String account_Dbs_eMCA_LIU_YULEI_SGD = "DBS eMCA - LIU YULEI (SGD)";
@@ -94,8 +95,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String scriptId_CIMB = "Mhf-AvlvNjbvPPLwsJY7VPkw9ezPKz0cG";
     //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
     private static final String scriptId_MyBank = "MoNdSxfXDH8wP_ODK4qZ9IBU9l98eQNnp";
-
-    //Project key (Deprecated) -> Script ID
     private static final String scriptId_HSBC = "MMGOtFC0w-A98Zh7SQ7XdmxU9l98eQNnp";
 
     public static final String transactionAccount = "Transaction Account";
