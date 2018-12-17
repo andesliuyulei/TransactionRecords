@@ -4,4 +4,6 @@
     <string name="button_submit_transaction">Submit Transaction</string>
     <string name="hint_transaction_date">Transaction Date</string>
     <string name="hint_remark">Remark</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
