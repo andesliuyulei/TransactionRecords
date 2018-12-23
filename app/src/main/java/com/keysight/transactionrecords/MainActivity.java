@@ -2,10 +2,12 @@ package com.keysight.transactionrecords;
 
 import android.Manifest;
 import android.accounts.AccountManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -243,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id) {
             case R.id.integrity_check:
-                //integrityCheck();
+                integrityCheck();
                 break;
            default:
                 //do nothing here!
@@ -253,6 +255,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void alert(String msg)
+    {
+        AlertDialog.Builder abuilder = new AlertDialog.Builder(this);
+        abuilder.setMessage(msg);
+        abuilder.setCancelable(Boolean.FALSE);
+        abuilder.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alert11 = abuilder.create();
+        alert11.show();
+    }
+
+    private void integrityCheck()
+    {
+        new MakeRequestTask(accountCredential, scriptId_MyBank, "integrityCheck", null).execute();
     }
 
     private void initializeDataFromApi() {
@@ -592,10 +615,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         @Override
-        protected void onPreExecute() {
-            if (scriptId.equals(scriptId_MyBank) && functionName.equals("getRemarkList")) {
+        protected void onPreExecute()
+        {
+            if (scriptId.equals(scriptId_MyBank) && functionName.equals("getRemarkList"))
+            {
                 progressDialog.setMessage("Initializing data from the backend system ...");
-            } else {
+            }
+            else if (functionName.equals("integrityCheck"))
+            {
+                progressDialog.setMessage("Executing Integrity Check...");
+            }
+            else
+            {
                 progressDialog.setMessage("Adding transaction record in the backend system ...");
             }
             progressDialog.show();
@@ -614,6 +645,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             else if (scriptId.equals(scriptId_MyBank) && functionName.equals("addRemark"))
             {
                 //do nothing here.
+            }
+            else if (functionName.equals("integrityCheck"))
+            {
+                if (output.get(1).equals("Summary"))
+                {
+                    alert("Integrity Check finished successfully.");
+                }
+                else
+                {
+                    alert("Integrity Check finished, but data is incorrect.");
+                }
             }
             else
             {
