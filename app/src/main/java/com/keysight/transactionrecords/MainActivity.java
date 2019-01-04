@@ -249,6 +249,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.integrity_check:
                 integrityCheck();
                 break;
+            case R.id.init_data:
+                initializeDataFromApi();
+                break;
+            case R.id.rst_form:
+                spinnerAccount.setSelection(0);
+                editDate.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+                chooseDebit.setSelected(Boolean.TRUE);
+                editAmount.setText("");
+                editRemark.setText("");
+                break;
            default:
                 //do nothing here!
                 break;

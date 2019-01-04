@@ -10,13 +10,13 @@
         <item
             android:id="@+id/init_data"
             android:title="Initialize Data" />
+        <item
+            android:id="@+id/rst_form"
+            android:title="Reset Form" />
     </group>
 
     <item android:title="Reserved Area">
         <menu>
-            <item
-                android:id="@+id/rst_form"
-                android:title="Reset Form" />
         </menu>
     </item>
 
