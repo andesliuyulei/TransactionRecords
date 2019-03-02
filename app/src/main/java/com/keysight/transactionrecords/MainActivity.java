@@ -60,7 +60,8 @@ import com.google.api.services.script.model.Operation;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+{
     static GoogleAccountCredential accountCredential;
     ProgressDialog progressDialog;
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -68,7 +69,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
     private static final String PREF_ACCOUNT_NAME = "accountName";
-    private static final String[] SCOPES = {
+    private static final String[] SCOPES =
+    {
             "https://www.googleapis.com/auth/drive",
             "https://www.googleapis.com/auth/spreadsheets",
             "https://www.googleapis.com/auth/script.external_request",
@@ -95,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final String account_Cimb_Platinum_LI_CHANG = "CIMB Platinum LI CHANG (Principle)";
     private static final String account_Cimb_Platinum_LIU_YULEI_S = "CIMB Platinum LIU YULEI (Supplementary)";
     private static final String account_Hsbc_Advance = "HSBC Advance VISA Platinum";
+    private static final String account_Scb_UnlimitedCashback = "SCB Unlimited Cashback MasterCard";
+    private static final String account_Scb_RewardsPlus = "SCB Rewards+ VISA Signature";
 
     private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
     private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
@@ -105,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
     private static final String scriptId_MyBank = "MoNdSxfXDH8wP_ODK4qZ9IBU9l98eQNnp";
     private static final String scriptId_HSBC = "MMGOtFC0w-A98Zh7SQ7XdmxU9l98eQNnp";
+    private static final String scriptId_SCB = "Mi4Fbc2RkP7m7gBdrJN241hU9l98eQNnp";
 
     public static final String transactionAccount = "Transaction Account";
     public static final String transactionDate = "Transaction Date";
@@ -123,7 +128,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static ArrayList<String> remarkList = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -170,29 +176,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 account_Kopitiam,
                                 account_Cimb_Platinum_LI_CHANG,
                                 account_Cimb_Platinum_LIU_YULEI_S,
-                                account_Hsbc_Advance
+                                account_Hsbc_Advance,
+                                account_Scb_UnlimitedCashback,
+                                account_Scb_RewardsPlus
                         }
                 )
         );
 
-        spinnerAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
                 if (parent.getSelectedItem().toString().equals(account_Rws_Invites) ||
-                        parent.getSelectedItem().toString().equals(account_Frasers_Rewards)) {
+                        parent.getSelectedItem().toString().equals(account_Frasers_Rewards))
+                {
                     chooseDebit.setText("Spend");
                     chooseCredit.setText("Redeem");
-                } else if (parent.getSelectedItem().toString().equals(account_Kopitiam)) {
+                }
+                else if (parent.getSelectedItem().toString().equals(account_Kopitiam))
+                {
                     chooseDebit.setText("Sub Total");
                     chooseCredit.setText("Top Up");
-                } else {
+                }
+                else
+                {
                     chooseDebit.setText("Debit");
                     chooseCredit.setText("Credit");
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent)
+            {
 
             }
         });
@@ -241,11 +257,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        switch (id) {
+        switch (id)
+        {
             case R.id.integrity_check:
                 integrityCheck();
                 break;
@@ -290,47 +308,67 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         new MakeRequestTask(accountCredential, scriptId_MyBank, "integrityCheck", null).execute();
     }
 
-    private void initializeDataFromApi() {
-        if (! isGooglePlayServicesAvailable()) {
+    private void initializeDataFromApi()
+    {
+        if (! isGooglePlayServicesAvailable())
+        {
             acquireGooglePlayServices();
-        } else if (accountCredential.getSelectedAccountName() == null) {
+        }
+        else if (accountCredential.getSelectedAccountName() == null)
+        {
             chooseAccount();
-        } else if (! isDeviceOnline()) {
+        }
+        else if (! isDeviceOnline())
+        {
             //mOutputText.setText("No network connection available.");
-        } else {
+        }
+        else
+        {
             new MakeRequestTask(accountCredential, scriptId_MyBank, "getRemarkList", null).execute();
         }
     }
 
     /** Called when the user taps the Submit Transaction button */
-    public void submitTransaction(View view) {
+    public void submitTransaction(View view)
+    {
         findViewById(R.id.buttonSubmit).setEnabled(Boolean.FALSE);
         getResultsFromApi();
         findViewById(R.id.buttonSubmit).setEnabled(Boolean.TRUE);
     }
 
-    private void displayResult(List<String> output) {
+    private void displayResult(List<String> output)
+    {
         Intent intent = new Intent(this, DisplayResult.class);
         intent.putExtra(transactionAccount, spinnerAccount.getSelectedItem().toString());
         intent.putExtra(transactionDate, editDate.getText().toString());
-        if (chooseDebit.isChecked()) {
+        if (chooseDebit.isChecked())
+        {
             if (spinnerAccount.getSelectedItem().toString().equals(account_Rws_Invites) ||
-                    spinnerAccount.getSelectedItem().toString().equals(account_Frasers_Rewards)) {
+                    spinnerAccount.getSelectedItem().toString().equals(account_Frasers_Rewards))
+            {
                 intent.putExtra(debitCredit, " (Spend)");
-            } else {
+            }
+            else
+            {
                 intent.putExtra(debitCredit, " (Debit)");
             }
-        } else {
+        }
+        else
+        {
             if (spinnerAccount.getSelectedItem().toString().equals(account_Rws_Invites) ||
-                    spinnerAccount.getSelectedItem().toString().equals(account_Frasers_Rewards)) {
+                    spinnerAccount.getSelectedItem().toString().equals(account_Frasers_Rewards))
+            {
                 intent.putExtra(debitCredit, " (Redeem)");
-            } else {
+            }
+            else
+            {
                 intent.putExtra(debitCredit, " (Credit)");
             }
         }
         intent.putExtra(transactionAmount, editAmount.getText().toString());
         intent.putExtra(transactionRemark, editRemark.getText().toString());
-        if (output != null) {
+        if (output != null)
+        {
             intent.putExtra(accountBalance, output.toArray()[0].toString());
         }
         startActivity(intent);
@@ -343,7 +381,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * of the preconditions are not satisfied, the app will prompt the user as
      * appropriate.
      */
-    private void getResultsFromApi() {
+    private void getResultsFromApi()
+    {
         // ID of the script to call. Acquire this from the Apps Script editor,
         // under Publish > Deploy as API executable.
         String scriptId = null;
@@ -353,7 +392,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         functionParameters.add(editDate.getText().toString());
         functionParameters.add(editAmount.getText().toString());
-        switch (spinnerAccount.getSelectedItem().toString()) {
+        switch (spinnerAccount.getSelectedItem().toString())
+        {
             /*case account_Dbs_eMCA_LIU_YULEI_SGD:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_eMCA_SGD";
@@ -442,19 +482,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 scriptId = scriptId_HSBC;
                 functionName = "newTransaction_Advance_MobileApp";
                 break;
+            case account_Scb_UnlimitedCashback:
+                scriptId = scriptId_SCB;
+                functionName = "newTransaction_UnlimitedCashback";
+                break;
+            case account_Scb_RewardsPlus:
+                scriptId = scriptId_SCB;
+                functionName = "newTransaction_RewardsPlus";
+                break;
             default:
                 break;
         }
 
         functionParameters.add(remark);
-        if (chooseDebit.isChecked()) {
+        if (chooseDebit.isChecked())
+        {
             functionParameters.add(true);
-        } else {
+        }
+        else
+        {
             functionParameters.add(false);
         }
 
         new MakeRequestTask(accountCredential, scriptId, functionName, functionParameters).execute();
-        if (remarkList.indexOf(remark) < 0) {
+        if (remarkList.indexOf(remark) < 0)
+        {
             remarkList.add(remark);
             editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
             List<Object> remarkToAdd = new ArrayList<>();
@@ -468,7 +520,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * @return true if Google Play Services is available and up to
      *     date on this device; false otherwise.
      */
-    private boolean isGooglePlayServicesAvailable() {
+    private boolean isGooglePlayServicesAvailable()
+    {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         final int connectionStatusCode = apiAvailability.isGooglePlayServicesAvailable(this);
         return connectionStatusCode == ConnectionResult.SUCCESS;
@@ -478,10 +531,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * Attempt to resolve a missing, out-of-date, invalid or disabled Google
      * Play Services installation via a user dialog, if possible.
      */
-    private void acquireGooglePlayServices() {
+    private void acquireGooglePlayServices()
+    {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         final int connectionStatusCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (apiAvailability.isUserResolvableError(connectionStatusCode)) {
+        if (apiAvailability.isUserResolvableError(connectionStatusCode))
+        {
             showGooglePlayServicesAvailabilityErrorDialog(connectionStatusCode);
         }
     }
@@ -497,17 +552,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * is granted.
      */
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
-    private void chooseAccount() {
-        if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS)) {
+    private void chooseAccount()
+    {
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS))
+        {
             String accountName = getPreferences(Context.MODE_PRIVATE).getString(PREF_ACCOUNT_NAME, null);
-            if (accountName != null) {
+            if (accountName != null)
+            {
                 accountCredential.setSelectedAccountName(accountName);
                 initializeDataFromApi();
-            } else {
+            }
+            else
+            {
                 // Start a dialog from which the user can choose an account
                 startActivityForResult(accountCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
             }
-        } else {
+        }
+        else
+        {
             // Request the GET_ACCOUNTS permission via a user dialog
             EasyPermissions.requestPermissions(
                     this,
@@ -522,7 +584,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * Checks whether the device currently has a network connection.
      * @return true if the device has a network connection, false otherwise.
      */
-    private boolean isDeviceOnline() {
+    private boolean isDeviceOnline()
+    {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
@@ -532,14 +595,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * An asynchronous task that handles the Google Apps Script Execution API call.
      * Placing the API calls in their own task ensures the UI stays responsive.
      */
-    private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
+    private class MakeRequestTask extends AsyncTask<Void, Void, List<String>>
+    {
         private com.google.api.services.script.Script mService = null;
         private Exception mLastError = null;
         private String scriptId = null;
         private String functionName = null;
         private List<Object> functionParameters = null;
 
-        MakeRequestTask(GoogleAccountCredential credential, String script, String function, List<Object> parameters) {
+        MakeRequestTask(GoogleAccountCredential credential, String script, String function, List<Object> parameters)
+        {
             HttpTransport transport = AndroidHttp.newCompatibleTransport();
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
             scriptId = script;
@@ -555,10 +620,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
          * @param params no parameters needed for this task.
          */
         @Override
-        protected List<String> doInBackground(Void... params) {
-            try {
+        protected List<String> doInBackground(Void... params)
+        {
+            try
+            {
                 return getDataFromApi();
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 mLastError = e;
                 cancel(true);
                 return null;
@@ -572,7 +641,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
          * @return list of String folder names and their IDs
          * @throws IOException
          */
-        private List<String> getDataFromApi() throws IOException, GoogleAuthException {
+        private List<String> getDataFromApi() throws IOException, GoogleAuthException
+        {
             // Create an execution request object.
             ExecutionRequest request = new ExecutionRequest()
                     .setDevMode(Boolean.TRUE) //TODO disable it before release.
@@ -583,13 +653,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Operation op = mService.scripts().run(scriptId, request).execute();
 
             // Print results of request.
-            if (op.getError() != null) {
+            if (op.getError() != null)
+            {
                 throw new IOException(getScriptError(op));
             }
 
-            if (op.getResponse() != null && op.getResponse().get("result") != null) {
+            if (op.getResponse() != null && op.getResponse().get("result") != null)
+            {
                 return (List<String>) op.getResponse().get("result");
-            } else {
+            }
+            else
+            {
                 return null;
             }
         }
@@ -602,8 +676,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
          * @return summary of error response, or null if Operation returned no
          *     error
          */
-        private String getScriptError(Operation op) {
-            if (op.getError() == null) {
+        private String getScriptError(Operation op)
+        {
+            if (op.getError() == null)
+            {
                 return null;
             }
 
@@ -617,11 +693,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             java.lang.StringBuilder sb = new StringBuilder("\nScript error message: ");
             sb.append(detail.get("errorMessage"));
 
-            if (stacktrace != null) {
+            if (stacktrace != null)
+            {
                 // There may not be a stacktrace if the script didn't start
                 // executing.
                 sb.append("\nScript error stacktrace:");
-                for (Map<String, Object> elem : stacktrace) {
+                for (Map<String, Object> elem : stacktrace)
+                {
                     sb.append("\n  ");
                     sb.append(elem.get("function"));
                     sb.append(":");
