@@ -24,16 +24,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/spinnerAccount"
+            <AutoCompleteTextView
+                android:id="@+id/editAccount"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginRight="16dp"
+                android:hint="Account Name" />
 
             <EditText
                 android:id="@+id/editDate"
@@ -47,16 +45,17 @@
                 android:inputType="date"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/spinnerAccount" />
+                app:layout_constraintTop_toTopOf="@+id/editAccount" />
 
             <RadioGroup
-                android:id="@+id/radioGroupDebitCredeit"
+                android:id="@+id/radioGroupDebitCredit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
                 android:checkedButton="@+id/radioButtonDebit"
+                android:orientation="horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/editDate">
@@ -89,7 +88,7 @@
                 android:inputType="numberDecimal"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/radioGroupDebitCredeit" />
+                app:layout_constraintTop_toTopOf="@+id/radioGroupDebitCredit" />
 
             <AutoCompleteTextView
                 android:id="@+id/editRemark"

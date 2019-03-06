@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             "https://www.googleapis.com/auth/documents" //2018-12-04: added.
     };
 
+    /*//
     //private static final String account_Dbs_eMCA_LIU_YULEI_SGD = "DBS eMCA - LIU YULEI (SGD)";
     private static final String account_Amex_True_Cashback_LIU_YULEI = "AMEX True Cashback - LIU YULEI";
     //private static final String account_Amex_True_Cashback_LI_CHANG = "AMEX True Cashback - LI CHANG";
@@ -91,9 +92,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final String account_Boc_Savings_Suqian_LI_CHANG = "BOC Savings Suqian - LI CHANG";
     //private static final String account_Maybank_Family_n_Friends = "Maybank Family & Friends";
     //private static final String account_Cimb_Visa_Signature = "CIMB Visa Signature";
-    private static final String account_Rws_Invites = "RWS Invites$ (Sentosa)";
-    private static final String account_Frasers_Rewards = "FRASERS Rewards";
-    private static final String account_Kopitiam = "Kopitiam";
     private static final String account_Cimb_Platinum_LI_CHANG = "CIMB Platinum LI CHANG (Principle)";
     private static final String account_Cimb_Platinum_LIU_YULEI_S = "CIMB Platinum LIU YULEI (Supplementary)";
     private static final String account_Hsbc_Advance = "HSBC Advance VISA Platinum";
@@ -107,9 +105,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //private static final String scriptId_Maybank = "MK75Sp5IMNgQ4Nl6GZUdcSxU9l98eQNnp";
     private static final String scriptId_CIMB = "Mhf-AvlvNjbvPPLwsJY7VPkw9ezPKz0cG";
     //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
-    private static final String scriptId_MyBank = "MoNdSxfXDH8wP_ODK4qZ9IBU9l98eQNnp";
     private static final String scriptId_HSBC = "MMGOtFC0w-A98Zh7SQ7XdmxU9l98eQNnp";
-    private static final String scriptId_SCB = "Mi4Fbc2RkP7m7gBdrJN241hU9l98eQNnp";
+    private static final String scriptId_SCB = "Mi4Fbc2RkP7m7gBdrJN241hU9l98eQNnp";//*/
+
+    private static List<String> listof_AccountName;
+    private static final String account_Rws_Invites = "RWS Invites (LIU YULEI)";
+    private static final String account_Frasers_Rewards = "FRASERS Rewards";
+    private static final String account_Kopitiam = "Kopitiam";
+
+    private static final String scriptId_MyBank = "MoNdSxfXDH8wP_ODK4qZ9IBU9l98eQNnp";
 
     public static final String transactionAccount = "Transaction Account";
     public static final String transactionDate = "Transaction Date";
@@ -118,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String accountBalance = "Account Balance";
     public static final String debitCredit = "Debit or Credit";
 
-    private static Spinner spinnerAccount = null;
+    private static AutoCompleteTextView editAccount = null;
     private static EditText editDate = null;
     private static EditText editAmount = null;
     private static AutoCompleteTextView editRemark = null;
@@ -126,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static RadioButton chooseCredit = null;
 
     private static ArrayList<String> remarkList = null;
+
+    private static int initJobCount = 0;
+    private static int initJobTotal = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -145,14 +152,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         progressDialog = new ProgressDialog(this);
 
-        spinnerAccount = findViewById(R.id.spinnerAccount);
+        editAccount = findViewById(R.id.editAccount);
         editDate = findViewById(R.id.editDate);
         editAmount = findViewById(R.id.editAmount);
         editRemark = findViewById(R.id.editRemark);
         chooseDebit = findViewById(R.id.radioButtonDebit);
         chooseCredit = findViewById(R.id.radioButtonCredit);
 
-        spinnerAccount.setAdapter(
+        /*//
+        editAccount.setAdapter(
                 new ArrayAdapter<String>(
                         this,
                         android.R.layout.simple_spinner_item,
@@ -181,9 +189,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 account_Scb_RewardsPlus
                         }
                 )
-        );
+        );//*/
 
-        spinnerAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        //editAccount
+
+        ///
+        editAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
@@ -211,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             {
 
             }
-        });
+        });//*/
 
         editDate.setText(
                 new SimpleDateFormat(
@@ -271,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 initializeDataFromApi();
                 break;
             case R.id.rst_form:
-                spinnerAccount.setSelection(0);
+                editAccount.setText("");//.setSelection(0);
                 editDate.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime()));
                 chooseDebit.setSelected(Boolean.TRUE);
                 editAmount.setText("");
@@ -324,6 +335,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else
         {
+            initJobTotal = 2;
+            initJobCount = 0;
+            new MakeRequestTask(accountCredential, scriptId_MyBank, "getAccountList", null).execute();
             new MakeRequestTask(accountCredential, scriptId_MyBank, "getRemarkList", null).execute();
         }
     }
@@ -339,12 +353,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void displayResult(List<String> output)
     {
         Intent intent = new Intent(this, DisplayResult.class);
-        intent.putExtra(transactionAccount, spinnerAccount.getSelectedItem().toString());
+        intent.putExtra(transactionAccount, editAccount.getText().toString());
         intent.putExtra(transactionDate, editDate.getText().toString());
         if (chooseDebit.isChecked())
         {
-            if (spinnerAccount.getSelectedItem().toString().equals(account_Rws_Invites) ||
-                    spinnerAccount.getSelectedItem().toString().equals(account_Frasers_Rewards))
+            if (editAccount.getText().toString().equals(account_Rws_Invites) ||
+                    editAccount.getText().toString().equals(account_Frasers_Rewards))
             {
                 intent.putExtra(debitCredit, " (Spend)");
             }
@@ -355,8 +369,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else
         {
-            if (spinnerAccount.getSelectedItem().toString().equals(account_Rws_Invites) ||
-                    spinnerAccount.getSelectedItem().toString().equals(account_Frasers_Rewards))
+            if (editAccount.getText().toString().equals(account_Rws_Invites) ||
+                    editAccount.getText().toString().equals(account_Frasers_Rewards))
             {
                 intent.putExtra(debitCredit, " (Redeem)");
             }
@@ -388,16 +402,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String scriptId = null;
         String functionName = null;
         List<Object> functionParameters = new ArrayList<>();
+        String account = editAccount.getText().toString();
+        if (listof_AccountName.indexOf(account) < 0)
+        {
+            alert("The Account Name (" + account + ") is invalid. Please enter a valid Account Name.");
+            return;
+        }
         String remark = editRemark.getText().toString();
 
+        functionParameters.add(account);
         functionParameters.add(editDate.getText().toString());
         functionParameters.add(editAmount.getText().toString());
-        switch (spinnerAccount.getSelectedItem().toString())
+
+        /*//
+        switch (editAccount.getText().toString())
         {
             /*case account_Dbs_eMCA_LIU_YULEI_SGD:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_eMCA_SGD";
-                break;*/
+                break;//* /
             case account_Amex_True_Cashback_LIU_YULEI:
                 scriptId = scriptId_AMEX;
                 functionName = "newTransaction_True_Cashback";
@@ -405,17 +428,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case account_Amex_True_Cashback_LI_CHANG:
                 scriptId = scriptId_AMEX;
                 functionName = "newTransaction_True_Cashback_LI_CHANG";
-                break;*/
+                break;//* /
             case account_Posb_Everyday_LIU_YULEI:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_Posb_Everyday";
                 functionParameters.add("Liu Yulei");
                 break;
-            case account_Posb_Everyday_LI_CHANG_S:
+            /* //case account_Posb_Everyday_LI_CHANG_S:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_Posb_Everyday";
                 functionParameters.add("Li Chang");
-                break;
+                break;//* /
             case account_Ocbc_360_Account:
                 scriptId = scriptId_OCBC;
                 functionName = "newTransaction_360_Account";
@@ -426,13 +449,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case account_Ocbc_365_Visa:
                 scriptId = scriptId_OCBC;
-                functionName = "newTransaction_365_Visa";
-                functionParameters.add("LIU YULEI");
+                functionName = "newTransaction_365_Visa_P_LYL";
+                //functionParameters.add("LIU YULEI");
                 break;
             case account_Ocbc_365_VisaS_LC:
                 scriptId = scriptId_OCBC;
-                functionName = "newTransaction_365_Visa";
-                functionParameters.add("LI CHANG");
+                functionName = "newTransaction_365_Visa_S_LC";
+                //functionParameters.add("LI CHANG");
                 break;
             case account_Ocbc_Cda_Liu_Xintong:
                 scriptId = scriptId_OCBC;
@@ -441,7 +464,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case account_Maybank_Family_n_Friends:
                 scriptId = scriptId_Maybank;
                 functionName = "newTransaction_Family_n_Friends";
-                break;*/
+                break;//* /
             case account_Posb_Savings_LIU_YULEI:
                 scriptId = scriptId_DBS_POSB;
                 functionName = "newTransaction_Posb_Savings";
@@ -455,7 +478,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             /*case account_Cimb_Visa_Signature:
                 scriptId = scriptId_CIMB;
                 functionName = "newTransaction_Visa_Signature";
-                break;*/
+                break;//* /
             case account_Rws_Invites:
                 scriptId = scriptId_MyBank;
                 functionName = "newTransaction_Rws_Invites";
@@ -492,9 +515,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             default:
                 break;
-        }
+        }//*/
 
-        functionParameters.add(remark);
+        //functionParameters.add(remark);
         if (chooseDebit.isChecked())
         {
             functionParameters.add(true);
@@ -503,8 +526,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             functionParameters.add(false);
         }
+        functionParameters.add(remark);
 
-        new MakeRequestTask(accountCredential, scriptId, functionName, functionParameters).execute();
+        new MakeRequestTask(accountCredential, scriptId_MyBank, functionName, functionParameters).execute();
         if (remarkList.indexOf(remark) < 0)
         {
             remarkList.add(remark);
@@ -713,13 +737,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected void onPreExecute()
         {
-            if (scriptId.equals(scriptId_MyBank) && functionName.equals("getRemarkList"))
+            if (functionName.equals("getAccountList") || functionName.equals("getRemarkList"))
             {
                 progressDialog.setMessage("Initializing data from the backend system ...");
             }
             else if (functionName.equals("integrityCheck"))
             {
-                progressDialog.setMessage("Executing Integrity Check...");
+                progressDialog.setMessage("Executing Integrity Check ...");
             }
             else
             {
@@ -732,18 +756,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected void onPostExecute(List<String> output)
         {
-            progressDialog.dismiss();
-            if (scriptId.equals(scriptId_MyBank) && functionName.equals("getRemarkList"))
+            if (functionName.equals("getRemarkList"))
             {
                 remarkList = (ArrayList<String>) output;
                 editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
+                initJobCount++;
+                if (initJobCount >= initJobTotal)
+                {
+                    progressDialog.dismiss();
+                }
             }
-            else if (scriptId.equals(scriptId_MyBank) && functionName.equals("addRemark"))
+            else if (functionName.equals("getAccountList"))
+            {
+                listof_AccountName = output;
+                editAccount.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, (ArrayList<String>)listof_AccountName));
+                initJobCount++;
+                if (initJobCount >= initJobTotal)
+                {
+                    progressDialog.dismiss();
+                }
+            }
+            else if (functionName.equals("addRemark"))
             {
                 //do nothing here.
             }
             else if (functionName.equals("integrityCheck"))
             {
+                progressDialog.dismiss();
                 if (output.get(1).equals("Summary"))
                 {
                     alert("Integrity Check finished successfully.");
@@ -755,6 +794,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             else
             {
+                progressDialog.dismiss();
                 displayResult(output);
             }
         }
