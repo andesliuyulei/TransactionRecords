@@ -399,8 +399,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     {
         // ID of the script to call. Acquire this from the Apps Script editor,
         // under Publish > Deploy as API executable.
-        String scriptId = null;
-        String functionName = null;
+        //String scriptId = null;
+        String functionName = "newTransactionRecord";
         List<Object> functionParameters = new ArrayList<>();
         String account = editAccount.getText().toString();
         if (listof_AccountName.indexOf(account) < 0)
