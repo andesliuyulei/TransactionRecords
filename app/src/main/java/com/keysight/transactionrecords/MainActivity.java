@@ -795,7 +795,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             else
             {
                 progressDialog.dismiss();
-                displayResult(output);
+                if (output.size() == 0)
+                {
+                    alert("The transaction API for Account Name (" + editAccount.getText().toString() + ") is not available. Please enter a valid Account Name.");
+                }
+                else
+                {
+                    displayResult(output);
+                }
             }
         }
 
