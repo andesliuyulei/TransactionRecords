@@ -191,9 +191,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 )
         );//*/
 
-        //editAccount
+        editAccount.setOnDismissListener(new AutoCompleteTextView.OnDismissListener()
+        {
+            @Override
+            public void onDismiss()
+            {
+                switch (editAccount.getText().toString())
+                {
+                    case account_Rws_Invites:
+                    case account_Frasers_Rewards:
+                        chooseDebit.setText("Spend");
+                        chooseCredit.setText("Redeem");
+                        break;
+                    case account_Kopitiam:
+                        chooseDebit.setText("Sub Total");
+                        chooseCredit.setText("Top Up");
+                        break;
+                    default:
+                        chooseDebit.setText("Debit");
+                        chooseCredit.setText("Credit");
+                        break;
+                }
+            }
+        });
 
-        ///
+        /*//
         editAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
