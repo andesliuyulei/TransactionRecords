@@ -25,3 +25,9 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+//this is required before adding respective code to build.gradle (Module: app).
+ext {
+    roomVersion = '1.1.1'
+    archLifecycleVersion = '1.1.1'
+}
