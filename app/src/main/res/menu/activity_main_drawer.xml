@@ -9,7 +9,7 @@
             android:title="Integrity Check" />
         <item
             android:id="@+id/init_data"
-            android:title="Initialize Data" />
+            android:title="Re-Initialize Data" />
         <item
             android:id="@+id/rst_form"
             android:title="Reset Form" />

@@ -13,7 +13,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,15 +23,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +36,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -285,7 +279,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getApplicationContext(),
                 Arrays.asList(SCOPES)
         ).setBackOff(new ExponentialBackOff());
-        initializeDataFromApi();
+        //initializeDataFromApi();
+        initializeAccount();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -338,10 +333,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void integrityCheck()
     {
-        new MakeRequestTask(accountCredential, scriptId_MyBank, "integrityCheck", null).execute();
+        if (! isDeviceOnline())
+        {
+            alert("No network connection available.");
+        }
+        else
+        {
+            new MakeRequestTask(accountCredential, scriptId_MyBank, "integrityCheck", null).execute();
+        }
     }
 
-    private void initializeDataFromApi()
+    private void initializeAccount()
     {
         if (! isGooglePlayServicesAvailable())
         {
@@ -351,9 +353,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             chooseAccount();
         }
-        else if (! isDeviceOnline())
+    }
+
+    private void initializeDataFromApi()
+    {
+        if (! isDeviceOnline())
         {
-            //mOutputText.setText("No network connection available.");
+            alert("No network connection available.");
         }
         else
         {
@@ -550,6 +556,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         functionParameters.add(remark);
 
+        if (!isDeviceOnline())
+        {
+            alert("No network connection available.");
+            return;
+        }
+
         new MakeRequestTask(accountCredential, scriptId_MyBank, functionName, functionParameters).execute();
         if (remarkList.indexOf(remark) < 0)
         {
@@ -606,7 +618,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (accountName != null)
             {
                 accountCredential.setSelectedAccountName(accountName);
-                initializeDataFromApi();
+                //initializeDataFromApi();
             }
             else
             {
