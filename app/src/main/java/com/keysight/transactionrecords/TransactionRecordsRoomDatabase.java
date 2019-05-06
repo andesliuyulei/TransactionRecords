@@ -7,10 +7,11 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Remark.class}, version = 1)
+@Database(entities = {Remark.class, Account.class}, version = 2)
 public abstract class TransactionRecordsRoomDatabase extends RoomDatabase
 {
     public abstract RemarkDao remarkDao();
+    public abstract AccountDao accountDao();
 
     private static volatile TransactionRecordsRoomDatabase INSTANCE;
 

@@ -6,6 +6,8 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -102,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final String scriptId_HSBC = "MMGOtFC0w-A98Zh7SQ7XdmxU9l98eQNnp";
     private static final String scriptId_SCB = "Mi4Fbc2RkP7m7gBdrJN241hU9l98eQNnp";//*/
 
-    private static List<String> listof_AccountName;
+    private static List<String> listof_AccountName = null;
     private static final String account_Rws_Invites = "RWS Invites (LIU YULEI)";
     private static final String account_Frasers_Rewards = "FRASERS Rewards";
     private static final String account_Kopitiam = "Kopitiam";
@@ -123,10 +126,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static RadioButton chooseDebit = null;
     private static RadioButton chooseCredit = null;
 
-    private static ArrayList<String> remarkList = null;
+    private static List<String> remarkList = null;
 
     private static int initJobCount = 0;
     private static int initJobTotal = 0;
+
+    private AccountViewModel mAccountViewModel;
+    private RemarkViewModel mRemarkViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -281,6 +287,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ).setBackOff(new ExponentialBackOff());
         //initializeDataFromApi();
         initializeAccount();
+
+        mAccountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
+        mRemarkViewModel = ViewModelProviders.of(this).get(RemarkViewModel.class);
+
+        mAccountViewModel.getAllElements().observe(this, new Observer<List<Account>>()
+        {
+            @Override
+            public void onChanged(@Nullable final List<Account> accounts)
+            {
+                if (listof_AccountName == null)
+                {
+                    listof_AccountName = new ArrayList<>();
+                }
+                else
+                {
+                    listof_AccountName.clear();
+                }
+                for (Account account : accounts)
+                {
+                    listof_AccountName.add(account.getAccountName());
+                }
+                editAccount.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, listof_AccountName));
+            }
+        });
+
+        mRemarkViewModel.getAllElements().observe(this, new Observer<List<Remark>>()
+        {
+            @Override
+            public void onChanged(@Nullable final List<Remark> remarks)
+            {
+                if (remarkList == null)
+                {
+                    remarkList = new ArrayList<>();
+                }
+                else
+                {
+                    remarkList.clear();
+                }
+                for (Remark remark : remarks)
+                {
+                    remarkList.add(remark.getRemark());
+                }
+                editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
+            }
+        });
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -363,6 +414,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else
         {
+            mAccountViewModel.deleteAllElements();
+            mRemarkViewModel.deleteAllElements();
             initJobTotal = 2;
             initJobCount = 0;
             new MakeRequestTask(accountCredential, scriptId_MyBank, "getAccountList", null).execute();
@@ -792,8 +845,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             if (functionName.equals("getRemarkList"))
             {
-                remarkList = (ArrayList<String>) output;
-                editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
+                for (String remark : output)
+                {
+                    if (remarkList.indexOf(remark) < 0)
+                    {
+                        mRemarkViewModel.insert(new Remark(remark));
+                    }
+                }
+                //remarkList = output;
+                //editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
                 initJobCount++;
                 if (initJobCount >= initJobTotal)
                 {
@@ -802,8 +862,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             else if (functionName.equals("getAccountList"))
             {
-                listof_AccountName = output;
-                editAccount.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, (ArrayList<String>)listof_AccountName));
+                for (String account : output)
+                {
+                    if (listof_AccountName.indexOf(account) < 0)
+                    {
+                        mAccountViewModel.insert(new Account(account));
+                    }
+                }
+                //listof_AccountName = output;
+                //editAccount.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, (ArrayList<String>)listof_AccountName));
                 initJobCount++;
                 if (initJobCount >= initJobTotal)
                 {
