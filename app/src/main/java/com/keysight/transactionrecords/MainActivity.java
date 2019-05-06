@@ -618,8 +618,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         new MakeRequestTask(accountCredential, scriptId_MyBank, functionName, functionParameters).execute();
         if (remarkList.indexOf(remark) < 0)
         {
-            remarkList.add(remark);
-            editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
+            mRemarkViewModel.insert(new Remark(remark));
+            //remarkList.add(remark);
+            //editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
             List<Object> remarkToAdd = new ArrayList<>();
             remarkToAdd.add(remark);
             new MakeRequestTask(accountCredential, scriptId_MyBank, "addRemark", remarkToAdd).execute();
