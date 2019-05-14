@@ -909,23 +909,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         @Override
-        protected void onCancelled() {
+        protected void onCancelled()
+        {
             progressDialog.dismiss();
-            if (mLastError != null) {
-                if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
+            if (mLastError != null)
+            {
+                if (mLastError instanceof GooglePlayServicesAvailabilityIOException)
+                {
                     showGooglePlayServicesAvailabilityErrorDialog(
                             ((GooglePlayServicesAvailabilityIOException) mLastError)
                                     .getConnectionStatusCode());
-                } else if (mLastError instanceof UserRecoverableAuthIOException) {
+                }
+                else if (mLastError instanceof UserRecoverableAuthIOException)
+                {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             MainActivity.REQUEST_AUTHORIZATION);
-                } else {
-                    //mOutputText.setText("The following error occurred:\n"
-                    //        + mLastError.getMessage());
                 }
-            } else {
-                //mOutputText.setText("Request cancelled.");
+                else
+                {
+                    alert("The following error occurred:\n" + mLastError.getMessage());
+                }
+            }
+            else
+            {
+                alert("Request cancelled.");
             }
         }
     }
