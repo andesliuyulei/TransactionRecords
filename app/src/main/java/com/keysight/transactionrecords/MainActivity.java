@@ -74,37 +74,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             "https://www.googleapis.com/auth/documents" //2018-12-04: added.
     };
 
-    /*//
-    //private static final String account_Dbs_eMCA_LIU_YULEI_SGD = "DBS eMCA - LIU YULEI (SGD)";
-    private static final String account_Amex_True_Cashback_LIU_YULEI = "AMEX True Cashback - LIU YULEI";
-    //private static final String account_Amex_True_Cashback_LI_CHANG = "AMEX True Cashback - LI CHANG";
-    private static final String account_Posb_Everyday_LIU_YULEI = "POSB Everyday - LIU YULEI (Principle)";
-    private static final String account_Posb_Everyday_LI_CHANG_S = "POSB Everyday - LI CHANG (Supplementary)";
-    private static final String account_Posb_Savings_LIU_YULEI = "POSB Savings - LIU YULEI";
-    //private static final String account_Posb_Savings_LI_CHANG = "POSB Savings - LI CHANG";
-    private static final String account_Ocbc_360_Account = "OCBC 360 Account";
-    private static final String account_Ocbc_365_Visa = "OCBC 365 VISA - LIU YULEI (Principle)";
-    private static final String account_Ocbc_365_VisaS_LC = "OCBC 365 VISA - LI CHANG (Supplementary)";
-    private static final String account_Ocbc_Cda_Liu_Xintong = "OCBC CDA LIU XINTONG";
-    private static final String account_Boc_Savings_Suqian_LI_CHANG = "BOC Savings Suqian - LI CHANG";
-    //private static final String account_Maybank_Family_n_Friends = "Maybank Family & Friends";
-    //private static final String account_Cimb_Visa_Signature = "CIMB Visa Signature";
-    private static final String account_Cimb_Platinum_LI_CHANG = "CIMB Platinum LI CHANG (Principle)";
-    private static final String account_Cimb_Platinum_LIU_YULEI_S = "CIMB Platinum LIU YULEI (Supplementary)";
-    private static final String account_Hsbc_Advance = "HSBC Advance VISA Platinum";
-    private static final String account_Scb_UnlimitedCashback = "SCB Unlimited Cashback MasterCard";
-    private static final String account_Scb_RewardsPlus = "SCB Rewards+ VISA Signature";
-
-    private static final String scriptId_DBS_POSB = "MBJnBsoaMrR3J4HbtnjuXqxU9l98eQNnp";
-    private static final String scriptId_AMEX = "MgexJWpf6y7_67esZ6IXqnEw9ezPKz0cG";
-    private static final String scriptId_OCBC = "MV2T0hPrD2ktnUOLUHHbKGkw9ezPKz0cG";
-    private static final String scriptId_BOC = "M6X7qbK-Sn1QkE66425Rf2RU9l98eQNnp";
-    //private static final String scriptId_Maybank = "MK75Sp5IMNgQ4Nl6GZUdcSxU9l98eQNnp";
-    private static final String scriptId_CIMB = "Mhf-AvlvNjbvPPLwsJY7VPkw9ezPKz0cG";
-    //private static final String scriptId_CangBaoTu = "MPPfRL3Vn2anQuRIUA-fu70w9ezPKz0cG"; //藏宝图
-    private static final String scriptId_HSBC = "MMGOtFC0w-A98Zh7SQ7XdmxU9l98eQNnp";
-    private static final String scriptId_SCB = "Mi4Fbc2RkP7m7gBdrJN241hU9l98eQNnp";//*/
-
     private static List<String> listof_AccountName = null;
     private static final String account_Rws_Invites = "RWS Invites (LIU YULEI)";
     private static final String account_Frasers_Rewards = "FRASERS Rewards";
@@ -143,8 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -158,38 +126,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editRemark = findViewById(R.id.editRemark);
         chooseDebit = findViewById(R.id.radioButtonDebit);
         chooseCredit = findViewById(R.id.radioButtonCredit);
-
-        /*//
-        editAccount.setAdapter(
-                new ArrayAdapter<String>(
-                        this,
-                        android.R.layout.simple_spinner_item,
-                        new String[] {
-                                //account_Dbs_eMCA_LIU_YULEI_SGD,
-                                account_Amex_True_Cashback_LIU_YULEI,
-                                //account_Amex_True_Cashback_LI_CHANG,
-                                account_Posb_Everyday_LIU_YULEI,
-                                account_Posb_Everyday_LI_CHANG_S,
-                                account_Posb_Savings_LIU_YULEI,
-                                //account_Posb_Savings_LI_CHANG,
-                                account_Ocbc_360_Account,
-                                account_Ocbc_365_Visa,
-                                account_Ocbc_365_VisaS_LC,
-                                account_Ocbc_Cda_Liu_Xintong,
-                                account_Boc_Savings_Suqian_LI_CHANG,
-                                //account_Maybank_Family_n_Friends,
-                                //account_Cimb_Visa_Signature,
-                                account_Rws_Invites,
-                                account_Frasers_Rewards,
-                                account_Kopitiam,
-                                account_Cimb_Platinum_LI_CHANG,
-                                account_Cimb_Platinum_LIU_YULEI_S,
-                                account_Hsbc_Advance,
-                                account_Scb_UnlimitedCashback,
-                                account_Scb_RewardsPlus
-                        }
-                )
-        );//*/
 
         editAccount.setOnDismissListener(new AutoCompleteTextView.OnDismissListener()
         {
@@ -215,60 +151,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        /*//
-        editAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                if (parent.getSelectedItem().toString().equals(account_Rws_Invites) ||
-                        parent.getSelectedItem().toString().equals(account_Frasers_Rewards))
-                {
-                    chooseDebit.setText("Spend");
-                    chooseCredit.setText("Redeem");
-                }
-                else if (parent.getSelectedItem().toString().equals(account_Kopitiam))
-                {
-                    chooseDebit.setText("Sub Total");
-                    chooseCredit.setText("Top Up");
-                }
-                else
-                {
-                    chooseDebit.setText("Debit");
-                    chooseCredit.setText("Credit");
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-
-            }
-        });//*/
-
-        editDate.setText(
-                new SimpleDateFormat(
-                        "yyyy-MM-dd",
-                        Locale.getDefault()
-                ).format(Calendar.getInstance().getTime())
-        );
+        editDate.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime()));
         editDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 // get current selected year, month and day.
                 String currentDate = editDate.getText().toString();
                 int mYear = Integer.parseInt(currentDate.substring(0,4)); // current year
                 int mMonth = Integer.parseInt(currentDate.substring(5,7)) - 1; // current month
                 int mDay = Integer.parseInt(currentDate.substring(8)); // current day
                 // date picker dialog
-                DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        MainActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
+                        new DatePickerDialog.OnDateSetListener()
+                        {
                             @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+                            {
                                 // set year, month and day value in the edit text
-                                editDate.setText(
-                                        year +
+                                editDate.setText(year +
                                         (monthOfYear<9?"-0":"-") + (monthOfYear + 1) +
                                         (dayOfMonth<10?"-0":"-") + dayOfMonth
                                 );
@@ -281,11 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         // Initialize credentials and service object.
-        accountCredential = GoogleAccountCredential.usingOAuth2(
-                getApplicationContext(),
-                Arrays.asList(SCOPES)
-        ).setBackOff(new ExponentialBackOff());
-        //initializeDataFromApi();
+        accountCredential = GoogleAccountCredential.usingOAuth2(getApplicationContext(),Arrays.asList(SCOPES)).setBackOff(new ExponentialBackOff());
         initializeAccount();
 
         mAccountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
@@ -350,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 initializeDataFromApi();
                 break;
             case R.id.rst_form:
-                editAccount.setText("");//.setSelection(0);
+                editAccount.setText("");
                 editDate.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime()));
                 chooseDebit.setSelected(Boolean.TRUE);
                 editAmount.setText("");
@@ -371,10 +268,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AlertDialog.Builder abuilder = new AlertDialog.Builder(this);
         abuilder.setMessage(msg);
         abuilder.setCancelable(Boolean.FALSE);
-        abuilder.setPositiveButton(
-                "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+        abuilder.setPositiveButton("OK",
+                new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
                         dialog.dismiss();
                     }
                 });
@@ -495,110 +393,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         functionParameters.add(editDate.getText().toString());
         functionParameters.add(editAmount.getText().toString());
 
-        /*//
-        switch (editAccount.getText().toString())
-        {
-            /*case account_Dbs_eMCA_LIU_YULEI_SGD:
-                scriptId = scriptId_DBS_POSB;
-                functionName = "newTransaction_eMCA_SGD";
-                break;//* /
-            case account_Amex_True_Cashback_LIU_YULEI:
-                scriptId = scriptId_AMEX;
-                functionName = "newTransaction_True_Cashback";
-                break;/*
-            case account_Amex_True_Cashback_LI_CHANG:
-                scriptId = scriptId_AMEX;
-                functionName = "newTransaction_True_Cashback_LI_CHANG";
-                break;//* /
-            case account_Posb_Everyday_LIU_YULEI:
-                scriptId = scriptId_DBS_POSB;
-                functionName = "newTransaction_Posb_Everyday";
-                functionParameters.add("Liu Yulei");
-                break;
-            /* //case account_Posb_Everyday_LI_CHANG_S:
-                scriptId = scriptId_DBS_POSB;
-                functionName = "newTransaction_Posb_Everyday";
-                functionParameters.add("Li Chang");
-                break;//* /
-            case account_Ocbc_360_Account:
-                scriptId = scriptId_OCBC;
-                functionName = "newTransaction_360_Account";
-                break;
-            case account_Boc_Savings_Suqian_LI_CHANG:
-                scriptId = scriptId_BOC;
-                functionName = "newTransaction_Savings_Suqian";
-                break;
-            case account_Ocbc_365_Visa:
-                scriptId = scriptId_OCBC;
-                functionName = "newTransaction_365_Visa_P_LYL";
-                //functionParameters.add("LIU YULEI");
-                break;
-            case account_Ocbc_365_VisaS_LC:
-                scriptId = scriptId_OCBC;
-                functionName = "newTransaction_365_Visa_S_LC";
-                //functionParameters.add("LI CHANG");
-                break;
-            case account_Ocbc_Cda_Liu_Xintong:
-                scriptId = scriptId_OCBC;
-                functionName = "newTransaction_CDA_LIU_XINTONG";
-                break;/*
-            case account_Maybank_Family_n_Friends:
-                scriptId = scriptId_Maybank;
-                functionName = "newTransaction_Family_n_Friends";
-                break;//* /
-            case account_Posb_Savings_LIU_YULEI:
-                scriptId = scriptId_DBS_POSB;
-                functionName = "newTransaction_Posb_Savings";
-                functionParameters.add("LIU YULEI");
-                break;/*
-            case account_Posb_Savings_LI_CHANG:
-                scriptId = scriptId_DBS_POSB;
-                functionName = "newTransaction_Posb_Savings";
-                functionParameters.add("LI CHANG");
-                break;*/
-            /*case account_Cimb_Visa_Signature:
-                scriptId = scriptId_CIMB;
-                functionName = "newTransaction_Visa_Signature";
-                break;//* /
-            case account_Rws_Invites:
-                scriptId = scriptId_MyBank;
-                functionName = "newTransaction_Rws_Invites";
-                break;
-            case account_Frasers_Rewards:
-                scriptId = scriptId_MyBank;
-                functionName = "newTransaction_Frasers_Rewards";
-                break;
-            case account_Kopitiam:
-                scriptId = scriptId_MyBank;
-                functionName = "newTransaction_Kopitiam";
-                break;
-            case account_Cimb_Platinum_LI_CHANG:
-                scriptId = scriptId_CIMB;
-                functionName = "newTransaction_PlatinumMastercard_LI_CHANG";
-                functionParameters.add("LI CHANG");
-                break;
-            case account_Cimb_Platinum_LIU_YULEI_S:
-                scriptId = scriptId_CIMB;
-                functionName = "newTransaction_PlatinumMastercard_LI_CHANG";
-                functionParameters.add("LIU YULEI");
-                break;
-            case account_Hsbc_Advance:
-                scriptId = scriptId_HSBC;
-                functionName = "newTransaction_Advance_MobileApp";
-                break;
-            case account_Scb_UnlimitedCashback:
-                scriptId = scriptId_SCB;
-                functionName = "newTransaction_UnlimitedCashback";
-                break;
-            case account_Scb_RewardsPlus:
-                scriptId = scriptId_SCB;
-                functionName = "newTransaction_RewardsPlus";
-                break;
-            default:
-                break;
-        }//*/
-
-        //functionParameters.add(remark);
         if (chooseDebit.isChecked())
         {
             functionParameters.add(true);
@@ -619,8 +413,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (remarkList.indexOf(remark) < 0)
         {
             mRemarkViewModel.insert(new Remark(remark));
-            //remarkList.add(remark);
-            //editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
             List<Object> remarkToAdd = new ArrayList<>();
             remarkToAdd.add(remark);
             new MakeRequestTask(accountCredential, scriptId_MyBank, "addRemark", remarkToAdd).execute();
@@ -672,7 +464,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (accountName != null)
             {
                 accountCredential.setSelectedAccountName(accountName);
-                //initializeDataFromApi();
             }
             else
             {
@@ -853,8 +644,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         mRemarkViewModel.insert(new Remark(remark));
                     }
                 }
-                //remarkList = output;
-                //editRemark.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, remarkList));
                 initJobCount++;
                 if (initJobCount >= initJobTotal)
                 {
@@ -870,8 +659,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         mAccountViewModel.insert(new Account(account));
                     }
                 }
-                //listof_AccountName = output;
-                //editAccount.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, (ArrayList<String>)listof_AccountName));
                 initJobCount++;
                 if (initJobCount >= initJobTotal)
                 {
@@ -944,13 +731,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * @param connectionStatusCode code describing the presence (or lack of)
      *     Google Play Services on this device.
      */
-    void showGooglePlayServicesAvailabilityErrorDialog(
-            final int connectionStatusCode) {
+    void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode)
+    {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        Dialog dialog = apiAvailability.getErrorDialog(
-                MainActivity.this,
-                connectionStatusCode,
-                REQUEST_GOOGLE_PLAY_SERVICES);
+        Dialog dialog = apiAvailability.getErrorDialog(MainActivity.this, connectionStatusCode, REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
     }
 
@@ -962,10 +746,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      *         a credential object.
      * @return an initializer with an extended read timeout.
      */
-    private static HttpRequestInitializer setHttpTimeout(final HttpRequestInitializer requestInitializer) {
-        return new HttpRequestInitializer() {
+    private static HttpRequestInitializer setHttpTimeout(final HttpRequestInitializer requestInitializer)
+    {
+        return new HttpRequestInitializer()
+        {
             @Override
-            public void initialize(HttpRequest httpRequest) throws java.io.IOException {
+            public void initialize(HttpRequest httpRequest) throws java.io.IOException
+            {
                 requestInitializer.initialize(httpRequest);
                 // This allows the API to call (and avoid timing out on)
                 // functions that take up to 6 minutes to complete (the maximum
@@ -986,37 +773,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      *     activity result.
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
+        switch(requestCode)
+        {
             case REQUEST_GOOGLE_PLAY_SERVICES:
-                if (resultCode != RESULT_OK) {
+                if (resultCode != RESULT_OK)
+                {
                     //mOutputText.setText(
                     //        "This app requires Google Play Services. Please install " +
                     //                "Google Play Services on your device and relaunch this app.");
-                } else {
-                    initializeDataFromApi();
+                }
+                else
+                {
+                    //TODO what to do?
+                    //initializeDataFromApi();
                 }
                 break;
             case REQUEST_ACCOUNT_PICKER:
-                if (resultCode == RESULT_OK && data != null &&
-                        data.getExtras() != null) {
-                    String accountName =
-                            data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-                    if (accountName != null) {
-                        SharedPreferences settings =
-                                getPreferences(Context.MODE_PRIVATE);
+                if (resultCode == RESULT_OK && data != null && data.getExtras() != null)
+                {
+                    String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                    if (accountName != null)
+                    {
+                        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
                         accountCredential.setSelectedAccountName(accountName);
-                        initializeDataFromApi();
+
+                        //TODO what to do?
+                        //initializeDataFromApi();
                     }
                 }
                 break;
             case REQUEST_AUTHORIZATION:
-                if (resultCode == RESULT_OK) {
-                    initializeDataFromApi();
+                if (resultCode == RESULT_OK)
+                {
+                    //TODO what to do?
+                    //initializeDataFromApi();
                 }
                 break;
         }
@@ -1031,12 +827,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      *     which is either PERMISSION_GRANTED or PERMISSION_DENIED. Never null.
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(
-                requestCode, permissions, grantResults, this);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     /**
@@ -1047,7 +841,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * @param list The requested permission list. Never null.
      */
     //@Override
-    public void onPermissionsGranted(int requestCode, List<String> list) {
+    public void onPermissionsGranted(int requestCode, List<String> list)
+    {
         // Do nothing.
     }
 
@@ -1059,7 +854,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * @param list The requested permission list. Never null.
      */
     //@Override
-    public void onPermissionsDenied(int requestCode, List<String> list) {
+    public void onPermissionsDenied(int requestCode, List<String> list)
+    {
         // Do nothing.
     }
 }
